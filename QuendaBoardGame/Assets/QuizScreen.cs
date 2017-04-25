@@ -46,16 +46,29 @@ public class QuizScreen : MonoBehaviour
     {
         m_game = FindObjectOfType<Game>();
 
-        Reset();
+        ToggleElements(false);
 	}
 
-    public void Reset()
+    /// <summary>
+    /// Toggle whether quiz elements are active (true) or disabled (false).
+    /// </summary>
+    /// <param name="toggle"></param>
+    public void ToggleElements(bool toggle)
     {
-        m_button1.SetActive(false);
-        m_button2.SetActive(false);
-        m_button3.SetActive(false);
-        m_button4.SetActive(false);
-        m_canvas.SetActive(false);
+        m_questionText.SetActive(toggle);
+
+        if (toggle)
+        {
+            
+        }
+        else
+        {
+            m_button1.SetActive(toggle);
+            m_button2.SetActive(toggle);
+            m_button3.SetActive(toggle);
+            m_button4.SetActive(toggle);
+        }
+       
         
     }
 
@@ -74,42 +87,62 @@ public class QuizScreen : MonoBehaviour
         switch(index)
         {
             case 1:
-                m_answerText1.GetComponent<Text>().text = text;
                 m_button1.SetActive(true);
+
+                m_answerText1.GetComponent<Text>().text = text;
                 break;
             case 2:
-                m_answerText1.GetComponent<Text>().text = text;
                 m_button2.SetActive(true);
+
+                m_answerText2.GetComponent<Text>().text = text;
                 break;
             case 3:
-                m_answerText1.GetComponent<Text>().text = text;
                 m_button3.SetActive(true);
+
+                m_answerText3.GetComponent<Text>().text = text;
                 break;
             case 4:
-                m_answerText1.GetComponent<Text>().text = text;
                 m_button4.SetActive(true);
+
+                m_answerText4.GetComponent<Text>().text = text;
                 break;
         }
     }
 
+    /// <summary>
+    /// Set the correct answer to the quiz
+    /// </summary>
+    /// <param name="ans"></param>
     public void SetAnswer(int ans)
     {
         m_answer = ans;
     }
 
+    /// <summary>
+    /// Begin the quiz. Expects the quiz has already been set up with SetQuestion, SetAnswer and SetQuizNode.
+    /// </summary>
     public void StartQuiz()
     {
-        m_canvas.SetActive(true);
+        //m_canvas.SetActive(true);
 
-        
+        ToggleElements(true);
 
     }
+
+    /// <summary>
+    /// End the quiz and resume the game.
+    /// </summary>
     public void EndQuiz()
     {
-        m_canvas.SetActive(false);
+        //m_canvas.SetActive(false);
+        ToggleElements(false);
         m_game.AllowMovement();
     }
 
+    /// <summary>
+    /// Have the player pick their answer
+    /// </summary>
+    /// <param name="i"></param>
     public void ChooseAnswer(int i)
     {
         if(i==m_answer)
