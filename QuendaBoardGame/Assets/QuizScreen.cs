@@ -30,6 +30,8 @@ public class QuizScreen : MonoBehaviour
     [SerializeField]
     GameObject m_answerText4;
 
+    [SerializeField]
+    GameObject m_hintText;
 
     [SerializeField]
     GameObject m_questionText;
@@ -56,6 +58,8 @@ public class QuizScreen : MonoBehaviour
     public void ToggleElements(bool toggle)
     {
         m_questionText.SetActive(toggle);
+        m_hintText.SetActive(toggle);
+
 
         if (toggle)
         {
@@ -63,6 +67,7 @@ public class QuizScreen : MonoBehaviour
         }
         else
         {
+
             m_button1.SetActive(toggle);
             m_button2.SetActive(toggle);
             m_button3.SetActive(toggle);
@@ -118,8 +123,37 @@ public class QuizScreen : MonoBehaviour
         m_answer = ans;
     }
 
+    string m_incorrectMessage;
+    string m_correctMessage;
+
     /// <summary>
-    /// Begin the quiz. Expects the quiz has already been set up with SetQuestion, SetAnswer and SetQuizNode.
+    /// Sets the correct message.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    public void SetCorrectMessage(string message)
+    {
+        m_correctMessage = message;
+    }
+
+    /// <summary>
+    /// Sets the hint.
+    /// </summary>
+    /// <param name="hint">The hint.</param>
+    public void SetHint(string hint)
+    {
+        m_hintText.GetComponent<Text>().text = hint;
+    }
+    /// <summary>
+    /// Sets the incorrect message.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    public void SetIncorrectMessage(string message)
+    {
+        m_incorrectMessage = message;
+    }
+
+    /// <summary>
+    /// Begin the quiz. Expects the quiz has already been set up with SetQuestion, SetAnswer, SetQuizNode, SetCorrectMessage and SetIncorrectMessage.
     /// </summary>
     public void StartQuiz()
     {
@@ -132,11 +166,11 @@ public class QuizScreen : MonoBehaviour
     /// <summary>
     /// End the quiz and resume the game.
     /// </summary>
-    public void EndQuiz()
+    public void EndQuiz(string message)
     {
         //m_canvas.SetActive(false);
         ToggleElements(false);
-        m_game.AllowMovement();
+        m_game.messageBox.GetComponent<MessageBox>().DisplayMessageBox(message);
     }
 
     /// <summary>
@@ -147,7 +181,11 @@ public class QuizScreen : MonoBehaviour
     {
         if(i==m_answer)
         {
-            EndQuiz();
+            EndQuiz(m_correctMessage);
+        }
+        else
+        {
+            EndQuiz(m_incorrectMessage);
         }
     }
 }

@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 
 {
+    [SerializeField]
+    bool debug;
+
     [SerializeField]
     float m_playerSpeed = 1.0f;
 
@@ -13,9 +17,38 @@ public class Game : MonoBehaviour
 
     [SerializeField]
     GameObject m_quizScreen;
-
     public GameObject quizScreen { get { return m_quizScreen; } }
 
+    [SerializeField]
+    GameObject m_messageBox;
+    public GameObject messageBox { get { return m_messageBox; } }
+
+    [SerializeField]
+    GameObject m_moveButton;
+
+    [SerializeField]
+    GameObject m_crossroadsMsgBox;
+    public GameObject crossroadsMsgBox { get { return m_crossroadsMsgBox; } }
+
+
+    // Use this for initialization
+    void Start()
+    {
+
+        m_currentNode = m_allPaths[0].list[0].GetComponent<Node>();
+        m_currentPath = m_allPaths[0].list;
+        m_currentTileIndex = 0;
+        Debug.Log("Test controls - keys 1-6: move 1 to 6 tiles. B: move random number between 1-6");
+        m_canMove = true;
+        m_messageBox.SetActive(true);
+        m_quizScreen.SetActive(true);
+        m_crossroadsMsgBox.SetActive(false);
+
+    }
+
+    /// <summary>
+    /// The listwrapper is as a workaround to insert values to lists of lists using the unity editor - there is no other way.
+    /// </summary>
     [System.Serializable]
     public class ListWrapper
     {
@@ -96,18 +129,7 @@ public class Game : MonoBehaviour
     /// </summary>
     public Node currentNode { get { return m_currentNode; }set { m_currentNode = value; } }
 
-    // Use this for initialization
-    void Start()
-    {
-
-        m_currentNode = m_allPaths[0].list[0].GetComponent<Node>();
-        m_currentPath = m_allPaths[0].list;
-        m_currentTileIndex = 0;
-        Debug.Log("Test controls - keys 1-6: move 1 to 6 tiles. B: move random number between 1-6");
-        m_canMove = true;
-
-    }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -171,7 +193,10 @@ public class Game : MonoBehaviour
             GoToNextNode();
         }
         */
-        
+        if(debug)
+        {
+
+        }
         if (Input.GetKeyDown(KeyCode.B))
         {
             int randNumber = Random.Range(1, 6);
@@ -276,10 +301,23 @@ public class Game : MonoBehaviour
                 m_tilesToMove = (currentPath.Count - (currentTileIndex + 1));
             }
 
-            m_canMove = false;
+            DisallowMovement();
         }
         
         
+    }
+
+    /// <summary>
+    /// Moves the player with button.
+    /// Rolls random number between 1 and 6.
+    /// </summary>
+    /// <param name="diceOutput">The dice output. Must have Text component.</param>
+    public void MoveWithButton(GameObject diceOutput)
+    {
+        int random = Random.Range(1, 6);
+        diceOutput.GetComponent<Text>().text = random.ToString();
+        MoveOnPath(random);
+
     }
     /// <summary>
     /// Gives the player ability to roll the dice and move once.
@@ -287,6 +325,41 @@ public class Game : MonoBehaviour
     public void AllowMovement()
     {
         m_canMove = true;
+        m_moveButton.SetActive(true);
+    }
+
+    /// <summary>
+    /// Removes the player ability to roll the dice and move.
+    /// </summary>
+    public void DisallowMovement()
+    {
+        m_canMove = true;
+        m_moveButton.SetActive(false);
     }
     bool m_canMove = false;
+
+    public void CloseCrossroadsMsgBox()
+    {
+        m_crossroadsMsgBox.SetActive(false);
+    }
+
+    /// <summary>
+    /// Goes left at crossroads. (For UI button functionality)
+    /// Must be on a crossroads node.
+    /// </summary>
+    public void GoLeftAtCrossroads()
+    {
+        CrossroadsNode node = currentNode.GetComponent<CrossroadsNode>();
+        node.GoLeft();
+    }
+
+    /// <summary>
+    /// Goes right at crossroads. (For UI button functionality)
+    /// Must be on a crossroads node.
+    /// </summary>
+    public void GoRightAtCrossroads()
+    {
+        CrossroadsNode node = currentNode.GetComponent<CrossroadsNode>();
+        node.GoRight();
+    }
 }

@@ -26,6 +26,9 @@ public class QuizNode : Node
                 quizScreen.SetQuizNode(1, "Answer");
                 quizScreen.SetQuizNode(2, "Answer2");
                 quizScreen.SetQuizNode(3, "Answer3");
+                quizScreen.SetCorrectMessage("Correct!");
+                quizScreen.SetIncorrectMessage("Incorrect.");
+                quizScreen.SetHint("The answer is 1!");
 
                 quizScreen.SetAnswer(1);
                 break;

@@ -15,10 +15,9 @@ public class CrossroadsNode : Node
 
     public override void PerformAction()
     {
-        
 
+        game.crossroadsMsgBox.SetActive(true);
 
-        StartCoroutine("CrossroadsChoice",true);
         // Create dialog box L/R
         // Wait for response
         // Move player to starting square of next path
@@ -31,9 +30,26 @@ public class CrossroadsNode : Node
     private int m_rightChoiceIndex=0;
 
 
+    public void GoLeft()
+    {
+        Debug.Log("Chose left path.");
+
+        game.SetCurrentPathAtStart(m_leftChoiceIndex);
+        game.AllowMovement();
+    }
+    public void GoRight()
+    {
+        Debug.Log("Chose right path.");
+        game.SetCurrentPathAtStart(m_rightChoiceIndex);
+        game.AllowMovement();
+    }
+
 
     IEnumerator CrossroadsChoice(bool wait)
     {
+        game.crossroadsMsgBox.SetActive(true);
+
+
         Debug.Log("Which way do you want to go? L/R");
         while (wait)
         {
