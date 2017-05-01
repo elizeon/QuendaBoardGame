@@ -54,8 +54,7 @@ public class QuizNode : Node
         quizScreen.SetCorrectMessage(quiz.correctMessage);
         quizScreen.SetIncorrectMessage(quiz.incorrectMessage);
         quizScreen.SetHint(quiz.hint);
-
-        quizScreen.SetAnswer(1);
+        quizScreen.SetAnswer(quiz.answer);
     }
 
 }

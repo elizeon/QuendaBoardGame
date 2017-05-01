@@ -10,6 +10,8 @@ public class MessageBox : MonoBehaviour
     GameObject m_messageText;
     [SerializeField]
     GameObject m_canvas;
+
+    bool m_canMoveOnResume = true;
     // Use this for initialization
     void Start ()
     {
@@ -25,8 +27,18 @@ public class MessageBox : MonoBehaviour
 
     public void DisplayMessageBox(string text)
     {
+        m_game.paused = true;
         m_canvas.SetActive(true);
         m_messageText.GetComponent<Text>().text = text;
+        m_canMoveOnResume = true;
+    }
+
+    public void DisplayMessageBox(string text, bool canMoveOnResume)
+    {
+        m_game.paused = true;
+        m_canvas.SetActive(true);
+        m_messageText.GetComponent<Text>().text = text;
+        m_canMoveOnResume = canMoveOnResume;
     }
 
     /// <summary>
@@ -34,8 +46,13 @@ public class MessageBox : MonoBehaviour
     /// </summary>
     public void CloseMessageBox()
     {
+        m_game.paused = false;
         HideMessageBox();
-        m_game.AllowMovement();
+        if(m_canMoveOnResume)
+        {
+            m_game.AllowStartMovement();
+
+        }
     }
     /// <summary>
     /// Closes the message box, not resuming the game.

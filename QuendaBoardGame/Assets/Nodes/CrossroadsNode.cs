@@ -35,13 +35,13 @@ public class CrossroadsNode : Node
         Debug.Log("Chose left path.");
 
         game.SetCurrentPathAtStart(m_leftChoiceIndex);
-        game.AllowMovement();
+        game.AllowStartMovement();
     }
     public void GoRight()
     {
         Debug.Log("Chose right path.");
         game.SetCurrentPathAtStart(m_rightChoiceIndex);
-        game.AllowMovement();
+        game.AllowStartMovement();
     }
 
 
@@ -58,7 +58,7 @@ public class CrossroadsNode : Node
                 Debug.Log("Chose left path.");
               
                 game.SetCurrentPathAtStart(m_leftChoiceIndex);
-                game.AllowMovement();
+                game.AllowStartMovement();
 
                 wait = false;
             }
@@ -68,7 +68,7 @@ public class CrossroadsNode : Node
             {
                 Debug.Log("Chose right path.");
                 game.SetCurrentPathAtStart(m_rightChoiceIndex);
-                game.AllowMovement();
+                game.AllowStartMovement();
 
                 wait = false;
             }

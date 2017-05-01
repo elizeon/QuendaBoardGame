@@ -166,11 +166,26 @@ public class QuizScreen : MonoBehaviour
     /// <summary>
     /// End the quiz and resume the game.
     /// </summary>
-    public void EndQuiz(string message)
+    public void EndQuiz(int i)
     {
+        string message;
+
+        if (i == m_answer)
+        {
+            message= m_correctMessage;
+            m_game.MoveOnPath(3);
+
+        }
+        else
+        {
+            message =m_incorrectMessage;
+            m_game.MoveOnPath(-3);
+
+        }
         //m_canvas.SetActive(false);
         ToggleElements(false);
-        m_game.messageBox.GetComponent<MessageBox>().DisplayMessageBox(message);
+        m_game.messageBox.GetComponent<MessageBox>().DisplayMessageBox(message); 
+        
     }
 
     /// <summary>
@@ -179,13 +194,8 @@ public class QuizScreen : MonoBehaviour
     /// <param name="i"></param>
     public void ChooseAnswer(int i)
     {
-        if(i==m_answer)
-        {
-            EndQuiz(m_correctMessage);
-        }
-        else
-        {
-            EndQuiz(m_incorrectMessage);
-        }
+
+        EndQuiz(i);
+
     }
 }
