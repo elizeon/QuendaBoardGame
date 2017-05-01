@@ -10,34 +10,52 @@ public class QuizNode : Node
     /// <summary>
     /// Which quiz is given.
     /// </summary>
-    public enum QuizType { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p };
+    /// 
 
-    public QuizType m_quizType;
+    /// <summary>
+    /// What quiz starts when the player lands on this tile?
+    /// </summary>
+    public int m_quizIndex = -1;
     public override void PerformAction()
     {
+        if (m_quizIndex == -1)
+        {
+            m_quizIndex = Random.Range(0,game.quizzes.Count);
+        }
+            
+
         QuizScreen quizScreen = game.quizScreen.GetComponent<QuizScreen>();
 
-
-        switch (m_quizType)
-        {
-            case QuizType.a:
-                Debug.Log("Quenda quiz A!");
-                quizScreen.SetQuestion("???");
-                quizScreen.SetQuizNode(1, "Answer");
-                quizScreen.SetQuizNode(2, "Answer2");
-                quizScreen.SetQuizNode(3, "Answer3");
-                quizScreen.SetCorrectMessage("Correct!");
-                quizScreen.SetIncorrectMessage("Incorrect.");
-                quizScreen.SetHint("The answer is 1!");
-
-                quizScreen.SetAnswer(1);
-                break;
-
-
-        }
-
+        SetupQuizScreen(quizScreen, game.quizzes[m_quizIndex]);
+        
         quizScreen.StartQuiz();
 
+    }
+
+    void SetupQuizScreen(QuizScreen quizScreen, Quiz quiz)
+    {
+        quizScreen.SetQuestion(quiz.question);
+        if (quiz.quizNode1 != "")
+        {
+            quizScreen.SetQuizNode(1, quiz.quizNode1);
+        }
+        if (quiz.quizNode2 != "")
+        {
+            quizScreen.SetQuizNode(2, quiz.quizNode2);
+        }
+        if (quiz.quizNode3 != "")
+        {
+            quizScreen.SetQuizNode(3, quiz.quizNode3);
+        }
+        if (quiz.quizNode4 != "")
+        {
+            quizScreen.SetQuizNode(4, quiz.quizNode4);
+        }
+        quizScreen.SetCorrectMessage(quiz.correctMessage);
+        quizScreen.SetIncorrectMessage(quiz.incorrectMessage);
+        quizScreen.SetHint(quiz.hint);
+
+        quizScreen.SetAnswer(1);
     }
 
 }

@@ -75,6 +75,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CatMinigame\2DUtil.cs" />
+    <Compile Include="Assets\CatMinigame\CatGame.cs" />
+    <Compile Include="Assets\CatMinigame\Enemy.cs" />
+    <Compile Include="Assets\CatMinigame\GameGrid.cs" />
+    <Compile Include="Assets\CatMinigame\GameObject2D.cs" />
+    <Compile Include="Assets\CatMinigame\HideLoc.cs" />
+    <Compile Include="Assets\CatMinigame\Player.cs" />
+    <Compile Include="Assets\CatMinigame\Rectangle.cs" />
+    <Compile Include="Assets\CatMinigame\Table.cs" />
+    <Compile Include="Assets\CatMinigame\Utility.cs" />
     <Compile Include="Assets\Game.cs" />
     <Compile Include="Assets\MessageBox.cs" />
     <Compile Include="Assets\Nodes\CrossroadsNode.cs" />
@@ -82,7 +92,15 @@
     <Compile Include="Assets\Nodes\MergeNode.cs" />
     <Compile Include="Assets\Nodes\Node.cs" />
     <Compile Include="Assets\Nodes\QuizNode.cs" />
+    <Compile Include="Assets\Quiz.cs" />
     <Compile Include="Assets\QuizScreen.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\CatMinigame\enemy1.txt" />
+    <None Include="Assets\CatMinigame\enemy2.txt" />
+    <None Include="Assets\CatMinigame\enemy3.txt" />
+    <None Include="Assets\CatMinigame\enemy4.txt" />
+    <None Include="Assets\CatMinigame\enemy5.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

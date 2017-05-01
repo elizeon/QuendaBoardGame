@@ -6,6 +6,12 @@ using UnityEngine.UI;
 public class Game : MonoBehaviour
 
 {
+
+    [SerializeField]
+    List<Quiz> m_quizzes;
+
+    public List<Quiz> quizzes;
+
     [SerializeField]
     bool debug;
 
@@ -14,6 +20,8 @@ public class Game : MonoBehaviour
 
     [SerializeField]
     GameObject m_player;
+
+    public GameObject player { get { return m_player; } }
 
     [SerializeField]
     GameObject m_quizScreen;
