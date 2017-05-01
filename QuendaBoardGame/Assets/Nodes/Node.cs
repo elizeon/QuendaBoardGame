@@ -8,14 +8,8 @@ public class Node : MonoBehaviour//System.Object
 
     Game m_game;
     public Game game { get { return m_game; }set { m_game = value; } }
-
-    [SerializeField]
-    bool m_endNode = false;
-    /// <summary>
-    /// Whether the node is the final node of the level.
-    /// </summary>
-    public bool endNode { get { return m_endNode; } set { m_endNode = value; } }
-
+    
+    
     public void Start()
     {
         m_game = FindObjectOfType<Game>();
@@ -28,12 +22,8 @@ public class Node : MonoBehaviour//System.Object
 
     public virtual void PerformAction()
     {
-        m_game.AllowMovement();
-
-        if (m_endNode)
-        {
-            Debug.Log("You completed the level!");
-        }
+        m_game.AllowStartMovement();
+        
     }
 }
 

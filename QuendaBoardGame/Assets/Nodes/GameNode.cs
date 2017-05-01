@@ -18,7 +18,7 @@ public class GameNode : Node
     public GameType m_gameType;
     public override void PerformAction()
     {
-        game.AllowMovement();
+        game.AllowStartMovement();
         if (m_gameType == GameType.food)
         {
 

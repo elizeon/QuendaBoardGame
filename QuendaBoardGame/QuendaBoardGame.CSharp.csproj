@@ -88,10 +88,12 @@
     <Compile Include="Assets\Game.cs" />
     <Compile Include="Assets\MessageBox.cs" />
     <Compile Include="Assets\Nodes\CrossroadsNode.cs" />
+    <Compile Include="Assets\Nodes\EndNode.cs" />
     <Compile Include="Assets\Nodes\GameNode.cs" />
     <Compile Include="Assets\Nodes\MergeNode.cs" />
     <Compile Include="Assets\Nodes\Node.cs" />
     <Compile Include="Assets\Nodes\QuizNode.cs" />
+    <Compile Include="Assets\Nodes\StartNode.cs" />
     <Compile Include="Assets\Quiz.cs" />
     <Compile Include="Assets\QuizScreen.cs" />
   </ItemGroup>
