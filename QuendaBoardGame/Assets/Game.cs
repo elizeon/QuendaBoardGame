@@ -84,26 +84,59 @@ public class Game : MonoBehaviour
         SetCurrentNode(currentTileIndex);
 
     }
+
+    int oldIndex = 0;
+    int currentPathIndex = 0;
     /// <summary>
     /// Moves to a new path, starting on its first node.
     /// </summary>
     /// <param name="index">Path index.</param>
     public void SetCurrentPathAtStart(int index)
     {
-        Debug.Log("Setting new path.");
+        oldIndex = currentPathIndex;
+        Debug.Log("Setting new path at start.");
         currentPath = allPaths[index].list;
+        currentPathIndex = index;
         SetCurrentNode(0);
 
         if (m_tilesToMove > 0)
         {
-            Node lastNode = currentPath[currentPath.Count - 1].GetComponent<Node>();
-            if (lastNode.type == Node.NodeType.none)
+            //if (lastNode.type == Node.NodeType.none)
+            //{
+            if(m_tilesToMove>currentPath.Count)
             {
-                m_tilesToMove = (currentPath.Count - (currentTileIndex + 1));
+                Debug.Log("Capping movement to new path's end.");
+                m_tilesToMove = currentPath.Count;
+
             }
             m_movingOnPath = true;
         }
     }
+
+    /// <summary>
+    /// Moves to a new path, starting on its last node.
+    /// </summary>
+    /// <param name="index">Path index.</param>
+    public void SetCurrentPathAtEnd(int index)
+    {
+        oldIndex = currentPathIndex;
+        Debug.Log("Setting new path at end.");
+        currentPath = allPaths[index].list;
+        currentPathIndex = index;
+        SetCurrentNode(currentPath.Count - 1);
+
+        if (m_tilesToMove < 0)
+        {
+            //if (lastNode.type == Node.NodeType.none)
+            //{
+            m_tilesToMove = -(currentPath.Count - (m_tilesToMove + 1));
+            //}
+            m_movingOnPath = true;
+        }
+    }
+
+
+
     /// <summary>
     /// Moves to node of given index on the current path.
     /// </summary>
@@ -284,6 +317,7 @@ public class Game : MonoBehaviour
     public bool paused { get; set; }
 
     int m_tilesToMove;
+    public int tilesToMove { get { return m_tilesToMove; } }
     int m_movedTiles = 0;
 
     void GoToNextNode()
@@ -354,13 +388,13 @@ public class Game : MonoBehaviour
             m_tilesToMove = count;
             m_movingOnPath = true;
 
+            /*
             Node lastNode = currentPath[currentPath.Count - 1].GetComponent<Node>();
             if (lastNode.type == Node.NodeType.none)
             {
-
                 m_tilesToMove = (currentPath.Count - (currentTileIndex + 1));
             }
-
+            */
             DisallowStartMovement();
         }
 

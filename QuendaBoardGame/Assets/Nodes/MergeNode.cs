@@ -13,12 +13,27 @@ public class MergeNode : Node
 
     public override void PerformAction()
     {
-        Debug.Log("Merging paths.");
-        game.SetCurrentPathAtStart(m_newPathIndex);
+        if(game.tilesToMove>=0)
+        {
+
+            Debug.Log("Merging paths move>=0.");
+            game.SetCurrentPathAtStart(m_newPathIndex);
+        }
+        else
+        {
+
+            Debug.Log("Merging paths move<0.");
+            game.SetCurrentPathAtEnd(m_prevPathIndex);
+        }
+
     }
 
     
     [SerializeField]
     int m_newPathIndex;
+    [SerializeField]
+    int m_prevPathIndex;
     public int newPathIndex { get { return m_newPathIndex; } }
+    public int prevPathIndex { get { return m_prevPathIndex; } }
+
 }
