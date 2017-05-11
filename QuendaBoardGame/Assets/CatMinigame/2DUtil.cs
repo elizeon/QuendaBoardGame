@@ -47,7 +47,7 @@ public class _2DUtil
         {
             Vector2 direction = (dest - obj.pos2D).normalized;
             obj.SetPos2D(obj.pos2D + direction * step);
-            PrintXnaVec(obj.pos2D);
+            //PrintXnaVec(obj.pos2D);
 
 
         if (Distance(obj.pos2D, dest) <= step)
@@ -61,28 +61,29 @@ public class _2DUtil
         }
 
 
-        public static void PrintXnaVec(Vector2 vec)
-        {
-            Debug.Log("Vector: " +vec.x + "," + vec.y);
-        }
-        /*
-        public static bool CheckCollision(GameObject2D obj1, GameObject2D obj2)
-        {
-            //if(obj1.collisions && obj2.collisions)
-            //{
-                if (obj1.boundingBox.Intersects(obj2.boundingBox))
-                {
-                    return (true);
+    public static void PrintVec(Vector2 vec)
+    {
+        Debug.Log("Vector: " +vec.x + "," + vec.y);
+    }
+    
+    /*
+    public static bool CheckCollision(GameObject2D obj1, GameObject2D obj2)
+    {
+        //if(obj1.collisions && obj2.collisions)
+        //{
+            if (obj1.boundingBox.Intersects(obj2.boundingBox))
+            {
+                return (true);
 
-                }
-                
-            //}
-            return false;
+            }
 
-        }
-        */
+        //}
+        return false;
 
-        public static bool CheckSphereCollision(Vector2 pos1, float radius1, Vector2 pos2, float radius2)
+    }
+    */
+
+    public static bool CheckSphereCollision(Vector2 pos1, float radius1, Vector2 pos2, float radius2)
         {
             if (_2DUtil.Distance(pos1, pos2) <= radius1 + radius2)
             {

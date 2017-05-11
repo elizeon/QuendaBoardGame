@@ -22,6 +22,10 @@ public class CatGame : MonoBehaviour
     [SerializeField]
     GameObject m_enemy;
 
+
+    [SerializeField]
+    GameObject m_camera;
+    Camera m_camerac;
     Player m_playerp;
     public Player player { get { return m_playerp; } }
 
@@ -39,6 +43,7 @@ public class CatGame : MonoBehaviour
         m_playerp = m_player.GetComponent<Player>();
         m_playerp.Set("player", "player", 10);
 
+        m_camerac = m_camera.GetComponent<Camera>();
         /*
         m_enemy1.AddCollisionTrigger(m_player, OtherTakesDamageStop);
         m_enemy2.AddCollisionTrigger(m_player, OtherTakesDamageStop);
@@ -70,7 +75,7 @@ public class CatGame : MonoBehaviour
         
         m_grid = GetComponent<GameGrid>();
 
-        m_grid = new GameGrid(10, 10, 0.1f);
+        m_grid.Set(10, 10, 0.1f);
 
 
         Level1Init();
@@ -300,16 +305,19 @@ public class CatGame : MonoBehaviour
 
         #region Global Scenes & GameObjects
         // Gameobjects
-
+        /*
         HideLoc m_bush1 = new HideLoc("bush1", "hideloc", 0);
         HideLoc m_bush2 = new HideLoc("bush2", "hideloc", 0);
         HideLoc m_bush3 = new HideLoc("bush3", "hideloc", 0);
         HideLoc m_bush4 = new HideLoc("bush4", "hideloc", 0);
         HideLoc m_bush5 = new HideLoc("bush5", "hideloc", 0);
-        Enemy m_enemy1 = new Enemy("enemy1", "enemy", 0);
-        Enemy m_enemy2 = new Enemy("enemy1", "enemy", 0);
-        Enemy m_enemy3 = new Enemy("enemy1", "enemy", 0);
-        Enemy m_enemy4 = new Enemy("enemy1", "enemy", 0);
+        */
+        //Enemy m_enemy1 = new Enemy("enemy1", "enemy", 0 ,1);
+        //Enemy m_enemy2 = new Enemy("enemy1", "enemy", 0 ,1);
+        //Enemy m_enemy3 = new Enemy("enemy1", "enemy", 0,1);
+        //Enemy m_enemy4 = new Enemy("enemy1", "enemy", 0,1);
+
+        /*
         GameObject2D m_end = new GameObject2D("end", "end");
 
 
@@ -322,7 +330,7 @@ public class CatGame : MonoBehaviour
         GameObject2D m_btnContinue = new GameObject2D("buttonstart", "button");
         GameObject2D m_btnQuit = new GameObject2D("buttonquit", "button");
         GameObject2D m_btnRestart = new GameObject2D("buttonrestart", "button");
-
+        */
     // Scenes
     /*
             Scene m_scene1 = new Scene();
@@ -386,19 +394,13 @@ public class CatGame : MonoBehaviour
             EnterScene(4);
         }
 
-        /// <summary>
-        /// Collision event with Enemy. The enemy resumes patrolling and the scene switches to 3 (Lose).
-        /// </summary>
-        /// <param name="gameTime">game time </param>
-        /// <param name="thisobj">this object</param>
-        /// <param name="other">other object</param>
-        void OtherTakesDamageStop(Enemy thisobj, GameObject2D other)
-        {
-
-            //Console.WriteLine("Collision event triggered: Enemy hit player");
-            thisobj.SetEnemyState(Enemy.EnemyState.patrolling);
-            EnterScene(3);
-        }
+    /// <summary>
+    /// The scene switches to losing screen.
+    /// </summary>
+    public void Lose()
+    {
+        EnterScene(6);
+    }
 
     
     
@@ -666,8 +668,6 @@ public class CatGame : MonoBehaviour
         /// </summary>
         float m_hardSpeed = 0.2f;
 
-    [SerializeField]
-    GameObject m_camera;
 
 
     IEnumerator LoadLevel1()
@@ -675,14 +675,17 @@ public class CatGame : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
         Scene nextScene = SceneManager.GetSceneByBuildIndex(2);
+        yield return null;
 
         SceneManager.UnloadSceneAsync(1);
 
-
+        yield return null;
         SceneManager.LoadScene(nextScene.buildIndex, LoadSceneMode.Additive);
 
+        yield return null;
 
         SceneManager.SetActiveScene(nextScene);
+        yield return null;
 
     }
     /// <summary>
@@ -706,7 +709,7 @@ public class CatGame : MonoBehaviour
         
 
         m_playerp.TriggerLife();
-        m_playerp.SetPos2D(new Vector2(0, 0));
+        m_playerp.SetPos2D(m_grid.GetPointWorld(m_camerac, 0.1f, 0.1f));
         //m_playerp.TriggerLife();
 
         HideLoc m_bush1 = Instantiate(m_bush).GetComponent<HideLoc>();
@@ -722,40 +725,55 @@ public class CatGame : MonoBehaviour
 
 
 
-        m_bush1.SetPos2D(m_grid.GetPoint(0.1f, 0.7f));
-        m_bush2.SetPos2D(m_grid.GetPoint(0.3f, 0.3f));
-        m_bush3.SetPos2D(m_grid.GetPoint(0.6f, 0.6f));
-        m_bush4.SetPos2D(m_grid.GetPoint(0.8f, 0.4f));
+        m_bush1.SetPos2D(m_grid.GetPointWorld(m_camerac, 0.1f, 0.7f));
+        m_bush2.SetPos2D(m_grid.GetPointWorld(m_camerac,0.3f, 0.3f));
+        m_bush3.SetPos2D(m_grid.GetPointWorld(m_camerac,0.6f, 0.6f));
+        m_bush4.SetPos2D(m_grid.GetPointWorld(m_camerac,0.8f, 0.4f));
 
-
-        m_playerp.SetPos2D(m_grid.GetPoint(0.1f, 0.7f));
-        m_playerp.SetPos2D(new Vector2(0, 10));
 
 
         
 
         GameObject m_player1 = Instantiate(m_player);
         Player m_player1p = m_player1.GetComponent<Player>();
-        m_player1.SetActive(true);
+
+        m_playerp.SetPos2D(m_grid.GetPointWorld(m_camerac, 0.1f, 0.1f));
+
+        m_player = m_player1;
+        m_playerp = m_player1p;
 
         GameObject m_enemy1 = Instantiate(m_enemy);
         Enemy m_enemy1e = m_enemy1.GetComponent<Enemy>();
 
         List<Vector2> patrolPath = //new List<Vector2>(); patrolPath.Add(m_grid.GetPoint(0.9f, 0.9f));
         LoadVec2GridPathFromFile(m_enemyPaths[0]);
+        m_enemy1e.Set("enemy", "enemy", 10, 1f,10f);
+
+        for (int i=0;i<patrolPath.Count;i++)
+        {
+            Vector2 world = m_camerac.ScreenToWorldPoint(new Vector3(patrolPath[i].x,patrolPath[i].y,1));
+            patrolPath[i] = world;
+        }
+
         m_enemy1e.patrolPath = patrolPath;
         m_enemy1e.SetEnemyState(Enemy.EnemyState.patrolling);
         m_enemy1e.StartPatrol(1);
 
-        m_enemy1e.SetPos2D(m_grid.GetPoint(0.3f, 0.2f));
+        m_enemy1e.SetPos2D(m_grid.GetPointWorld(m_camerac,0.3f, 0.2f));
 
-        m_enemy1e.SetPos2D(new Vector2(0, 0));
         m_enemy1.SetActive(true);
-
-
-
-
+        // todo remove
+        difficulty = 0;
         
+        if(difficulty == 0)
+        {
+            m_enemy1e.SetMoveSpeed(0.01f);
+            m_enemy1e.viewDist = 0.1f;
+        }
+
+        m_player1.SetActive(true);
+
+
 
         /*
             m_scene1 = new Scene();

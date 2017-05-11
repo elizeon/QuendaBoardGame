@@ -7,8 +7,17 @@ using UnityEngine;
 /// </summary>
 public class Player : GameObject2D
 {
-	// Use this for initialization
-	void Start ()
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if(col.gameObject.tag == "Enemy")
+        {
+            catGame.Lose();
+        }
+    }
+
+        // Use this for initialization
+        void Start ()
     {
 	}
         private bool m_hiding = false;
@@ -17,6 +26,7 @@ public class Player : GameObject2D
 
         private Vector2 m_targetLoc;
 
+    /*
         /// <summary>
         /// constructor
         /// </summary>
@@ -26,7 +36,7 @@ public class Player : GameObject2D
         public Player(string newid, string newtype, float newhp) : base(newid, newtype, newhp)
         {
 
-        }
+        }*/
 
         /// <summary>
         /// True if initial position of player has not been set.
