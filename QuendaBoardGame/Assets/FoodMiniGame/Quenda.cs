@@ -29,7 +29,7 @@ public class Quenda : MonoBehaviour {
        
         for(int i = 0; i < effects.Count; i++)
         {
-            if(effects[i].duration == 0)
+            if(effects[i].duration <= 0)
             {
                 effects.RemoveAt(i);
             }
