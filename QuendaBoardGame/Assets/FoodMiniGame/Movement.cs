@@ -5,6 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour {
 
     public float speed;
+    public bool dirFlip;
     private Vector3 target;
     private int controlMethod = 0;
     //0 is all methods active
@@ -53,7 +54,14 @@ public class Movement : MonoBehaviour {
             ang += 90;
             //transform.LookAt(target, Vector3.forward);
             transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, ang));
-            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            if (dirFlip)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, target, -speed * Time.deltaTime);
+            }
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            }
         }
     }
 
@@ -66,6 +74,9 @@ public class Movement : MonoBehaviour {
             target = Camera.main.ScreenToWorldPoint(mousePos);
             target.z = transform.position.z;
             Debug.Log(target);
+        }else
+        { 
+            target = transform.position;
         }
     }
 }

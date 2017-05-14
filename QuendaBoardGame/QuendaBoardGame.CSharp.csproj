@@ -103,6 +103,7 @@
     <None Include="Assets\CatMinigame\enemy3.txt" />
     <None Include="Assets\CatMinigame\enemy4.txt" />
     <None Include="Assets\CatMinigame\enemy5.txt" />
+    <None Include="Assets\Materials\UnlitNoCull.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

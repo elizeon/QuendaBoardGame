@@ -7,16 +7,22 @@ using UnityEngine;
 /// </summary>
 public class Player : GameObject2D
 {
-	// Use this for initialization
-	void Start ()
+
+    void OnTriggerEnter2D(Collider2D col)
     {
-	}
+        if(col.CompareTag("Enemy"))
+        {
+            catGame.Lose();
+        }
+    }
+    
         private bool m_hiding = false;
         public bool hiding { get { return m_hiding; } set { m_hiding = value; } }
         private float m_moveSpeed = 0.3f;
 
         private Vector2 m_targetLoc;
 
+    /*
         /// <summary>
         /// constructor
         /// </summary>
@@ -26,7 +32,7 @@ public class Player : GameObject2D
         public Player(string newid, string newtype, float newhp) : base(newid, newtype, newhp)
         {
 
-        }
+        }*/
 
         /// <summary>
         /// True if initial position of player has not been set.
@@ -140,7 +146,7 @@ public class Player : GameObject2D
 
             // Player input
             
-            if (Input.GetMouseButtonDown(0))
+            /*if (Input.GetMouseButtonDown(0))
             {
                     //m_targetLoc =  new Vector2(mouse.Position.X,mouse.Position.Y);
                     m_playerMoving = true;
@@ -155,7 +161,7 @@ public class Player : GameObject2D
               
 
 
-            }
+            }*/
             // Player movement
 
             if (m_playerMoving && !_2DUtil.IsAt(this.pos2D, m_targetLoc))

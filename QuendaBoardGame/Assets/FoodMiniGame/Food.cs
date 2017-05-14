@@ -7,8 +7,10 @@ public class Food : MonoBehaviour {
     public string m_name;
     public int m_hungerEffect;
     public int m_scoreEffct;
-    public string m_characterEffect;
     public float m_characterEffectDuration;
+    public float m_characterEffectHunger;
+    public bool m_characterEffectFlip;
+    public float m_characterEffectSpeed;
     public float m_life;
 
     // Use this for initialization

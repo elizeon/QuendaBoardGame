@@ -27,7 +27,7 @@ public class GameGrid : MonoBehaviour {
         /// <param name="xsize">number of squares along screen x axis</param>
         /// <param name="ysize">number of squares along screen y axis</param>
         /// <param name="squareLength">square length as proportion of screen</param>
-        public GameGrid(int xsize, int ysize, float squareLength)
+        public void Set(int xsize, int ysize, float squareLength)
         {
             centrePoints = new Vector2[xsize, ysize];
 
@@ -75,5 +75,19 @@ public class GameGrid : MonoBehaviour {
             }
         }
 
-    
+        public Vector2 GetPointWorld(Camera cam, float x, float y)
+        {
+            if (x <= 1 && y <= 1)
+            {
+            Vector2 myVec = cam.ViewportToWorldPoint(new Vector3(x, y, 0.01f));
+            return myVec;
+            //return myVec;
+            }
+            else
+            {
+                return default(Vector2);
+            }
+        }
+
+
 }
