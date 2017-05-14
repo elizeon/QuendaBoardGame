@@ -8,18 +8,14 @@ using UnityEngine;
 public class Player : GameObject2D
 {
 
-    void OnCollisionEnter2D(Collision2D col)
+    void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.gameObject.tag == "Enemy")
+        if(col.CompareTag("Enemy"))
         {
             catGame.Lose();
         }
     }
-
-        // Use this for initialization
-        void Start ()
-    {
-	}
+    
         private bool m_hiding = false;
         public bool hiding { get { return m_hiding; } set { m_hiding = value; } }
         private float m_moveSpeed = 0.3f;
@@ -150,7 +146,7 @@ public class Player : GameObject2D
 
             // Player input
             
-            if (Input.GetMouseButtonDown(0))
+            /*if (Input.GetMouseButtonDown(0))
             {
                     //m_targetLoc =  new Vector2(mouse.Position.X,mouse.Position.Y);
                     m_playerMoving = true;
@@ -165,7 +161,7 @@ public class Player : GameObject2D
               
 
 
-            }
+            }*/
             // Player movement
 
             if (m_playerMoving && !_2DUtil.IsAt(this.pos2D, m_targetLoc))
