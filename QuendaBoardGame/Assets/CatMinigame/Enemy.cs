@@ -9,9 +9,9 @@ public class Enemy : GameObject2D
 {
 
     public EnemyState enemyState { get { return m_enemyState; } }
-
-    private List<Vector2> m_patrolPath = new List<Vector2>();
-    public List<Vector2> patrolPath { set { m_patrolPath = value; } get { return m_patrolPath; } }
+    [SerializeField]
+    private GameObject m_patrolPath;
+    //public List<Vector2> patrolPath { set { m_patrolPath = value; } get { return m_patrolPath; } }
 
     private int m_patrolIndex = 0;
     private float m_currentMoveSpeed = 0.1f;
@@ -24,6 +24,7 @@ public class Enemy : GameObject2D
     public void SetMoveSpeed(float sp)
     {
         m_defaultMoveSpeed = sp;
+        CorrectMovementSpeed();
     }
 
     public enum EnemyState { patrolling, chasing }
@@ -36,39 +37,32 @@ public class Enemy : GameObject2D
     {
         //Console.WriteLine("Enemy state changed to " + istate);
         m_enemyState = istate;
-        if (istate == EnemyState.patrolling)
+        CorrectMovementSpeed();
+    }
+
+    private void CorrectMovementSpeed()
+    {
+        if (m_enemyState == EnemyState.patrolling)
         {
             m_currentMoveSpeed = m_defaultMoveSpeed;
         }
-        if (istate == EnemyState.chasing)
+        if (m_enemyState == EnemyState.chasing)
         {
-            m_currentMoveSpeed = m_chaseSpeed;
+            m_currentMoveSpeed = m_defaultMoveSpeed * 3;
         }
     }
 
-    float m_chaseSpeed = 1;
-
-    //Table<GameObject2D, Action<GameTime, Enemy, GameObject2D>> collisionTriggersWithThisType = new Table<GameObject2D, Action<GameTime, Enemy, GameObject2D>>(COLTRIGGERSIZE);
-
-        /*
+    float m_chaseSpeedMultiplier = 3;
+    
     /// <summary>
-    /// Constructor
+    /// Sets the enemy
     /// </summary>
-    /// <param name="newid">id</param>
-    /// <param name="newtype">type</param>
-    /// <param name="newhp">hitpoints, 0 for invincible</param>
-    public Enemy(string newid, string newtype, float newhp, float moveSpeed, float chaseSpeed) : base(newid, newtype, newhp)
-    {
-        viewDist = 100;
-        viewAngle = 20;
-        hiddenViewDist = 75;
-        closeViewDist = 100;
-        m_defaultMoveSpeed = moveSpeed;
-        m_chaseSpeed = chaseSpeed;
-    }
-    */
-
-    public void Set(string newid, string newtype, float newhp, float moveSpeed, float chaseSpeed)
+    /// <param name="newid"></param>
+    /// <param name="newtype"></param>
+    /// <param name="newhp"></param>
+    /// <param name="moveSpeed"></param>
+    /// <param name="chaseSpeedMultiplier"></param>
+    public void Set(string newid, string newtype, float newhp, float moveSpeed, float chaseSpeedMultiplier, EnemyState startingState)
     {
         id = newid;
         hp = newhp;
@@ -78,7 +72,8 @@ public class Enemy : GameObject2D
         hiddenViewDist = 75;
         closeViewDist = 100;
         m_defaultMoveSpeed = moveSpeed;
-        m_chaseSpeed = chaseSpeed;
+        m_chaseSpeedMultiplier = chaseSpeedMultiplier;
+        m_enemyState = startingState;
     }
     
     
@@ -104,18 +99,18 @@ public class Enemy : GameObject2D
 
             if (!player.hiding &&// If the player is not hiding
                                     // Is the player within the enemy's view angle?
-                (Utility.WithinAngle(rotToPlayer, rotation, viewAngle) ||
+                (Utility.WithinAngle(rotToPlayer, rotation, viewAngle))) //||
                     // Is the player in the close view distance sphere?
-                    _2DUtil.CheckSphereCollision(pos2D, closeViewDist, player.pos2D, player.boundingBox.Width)))
+                    //_2DUtil.CheckSphereCollision(pos2D, closeViewDist, player.pos2D, player.boundingBox.Width)))
             {
                 chase = true;
             }
             else
             {
                 // If the player is within the cat's hidden sight
-                if (_2DUtil.CheckSphereCollision(pos2D, hiddenViewDist, player.pos2D, player.boundingBox.Width))
+                //if (_2DUtil.CheckSphereCollision(pos2D, hiddenViewDist, player.pos2D, player.boundingBox.Width))
                 {
-                    chase = true;
+                    //chase = true;
                 }
             }
 
@@ -127,17 +122,23 @@ public class Enemy : GameObject2D
             SetEnemyState(EnemyState.chasing);
 
         }
-            
-        if (!_2DUtil.IsAt(this.pos2D, patrolPath[m_patrolIndex]))
+
+        Vector2 patrolLoc = m_patrolPath.transform.GetChild(m_patrolIndex).position;
+
+
+        if (!_2DUtil.IsAt(this.pos2D, patrolLoc))
             {
                 Debug.Log("Moving towards next patrol point. ");
-                _2DUtil.PrintVec(patrolPath[m_patrolIndex]);
-                _2DUtil.MoveTowards(this, patrolPath[m_patrolIndex], Time.fixedDeltaTime * m_currentMoveSpeed);
+                _2DUtil.PrintVec(patrolLoc);
+
+                //m_currentMoveSpeed = 1000;
+                SetPos2D( Vector2.MoveTowards(pos2D, patrolLoc, Time.fixedDeltaTime * m_currentMoveSpeed));
+                //_2DUtil.MoveTowards(this, patrolPath[m_patrolIndex], Time.fixedDeltaTime * m_currentMoveSpeed);
                 //Console.WriteLine(pos2D.X + ", " + pos2D.Y + " / " + patrolPath[m_patrolIndex].X + ", " + patrolPath[m_patrolIndex].Y);
 
-                if (_2DUtil.IsAt(pos2D, patrolPath[m_patrolIndex]))
+                if (pos2D == patrolLoc)
                 {
-                    if (m_patrolIndex < m_patrolPath.Count - 1)
+                    if (m_patrolIndex < m_patrolPath.transform.childCount - 1)
                     {
                         Debug.Log("Reached next patrol point.");
                         m_patrolIndex += 1;
@@ -185,17 +186,21 @@ public class Enemy : GameObject2D
         /// </summary>
         public float hiddenViewDist { get; set; }
 
-        public void StartPatrol(int newPatrolIndex)
-        {
-            Vector2 source = this.pos2D;
-            Vector2 dest = m_patrolPath[newPatrolIndex];
+    /// <summary>
+    /// Starts the patrol.
+    /// </summary>
+    /// <param name="newPatrolIndex">Index to start patrol at.</param>
+    public void StartPatrol(int newPatrolIndex)
+    {
+        Vector2 source = this.pos2D;
+        Vector2 dest = m_patrolPath.transform.GetChild(newPatrolIndex).position;
 
 
-            rotation = _2DUtil.LookAt(source, dest);
-            direction = dest - this.pos2D;
-            m_patrolIndex = newPatrolIndex;
+        rotation = _2DUtil.LookAt(source, dest);
+        direction = dest - this.pos2D;
+        m_patrolIndex = newPatrolIndex;
 
-        }
+    }
 
         public float viewDist { get; set; }
 

@@ -73,7 +73,7 @@ public class Movement : MonoBehaviour {
             mousePos.z = 30;
             target = Camera.main.ScreenToWorldPoint(mousePos);
             target.z = transform.position.z;
-            Debug.Log(target);
+            //Debug.Log(target);
         }else
         { 
             target = transform.position;

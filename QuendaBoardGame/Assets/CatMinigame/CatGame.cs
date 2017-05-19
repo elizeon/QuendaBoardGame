@@ -11,9 +11,37 @@ public class CatGame : MonoBehaviour
 
 {
 
+
     [SerializeField]
-    List<TextAsset> m_enemyPaths;
+    public GameObject m_catGame;
+
     [SerializeField]
+    public float m_playerMoveSpeedEasy;
+
+    [SerializeField]
+    public float m_enemyMoveSpeedEasy;
+
+
+    [SerializeField]
+    public float m_playerMoveSpeedMedium;
+
+    [SerializeField]
+    public float m_enemyMoveSpeedMedium;
+
+
+    [SerializeField]
+    public float m_playerMoveSpeedHard;
+
+    [SerializeField]
+    public float m_enemyMoveSpeedHard;
+
+    [SerializeField]
+    GameObject m_layout1;
+
+    Game m_game;
+
+    /*
+     * [SerializeField]
     GameObject m_grassObj;
     [SerializeField]
     GameObject m_bush;
@@ -21,7 +49,10 @@ public class CatGame : MonoBehaviour
     GameObject m_player;
     [SerializeField]
     GameObject m_enemy;
-
+     
+    */
+    [SerializeField]
+    List<TextAsset> m_enemyPaths;
 
     [SerializeField]
     GameObject m_camera;
@@ -34,14 +65,15 @@ public class CatGame : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        DontDestroyOnLoad(this);
+        m_game = FindObjectOfType<Game>();
+        DontDestroyOnLoad(this.gameObject);
         DontDestroyOnLoad(m_camera);
-        DontDestroyOnLoad(m_player);
-        DontDestroyOnLoad(m_enemy);
-        DontDestroyOnLoad(m_bush);
 
-        m_playerp = m_player.GetComponent<Player>();
-        m_playerp.Set("player", "player", 10);
+        DontDestroyOnLoad(m_layout1);
+        //DontDestroyOnLoad(m_enemy);
+        //DontDestroyOnLoad(m_bush);
+
+        //
 
         m_camerac = m_camera.GetComponent<Camera>();
         /*
@@ -102,16 +134,7 @@ public class CatGame : MonoBehaviour
                 {
                     m_debugPath = new List<Vector2>();
                 }
-
-                // Write points to file
-                if (Input.GetKeyDown(KeyCode.W))
-                {
-                    float t = Time.timeSinceLevelLoad;
-
-                    WriteVec2sToFile(m_debugPath, "Path " +t+ ".txt");
-
-                    EnterScene(2);
-                }
+                
             }
 
             
@@ -237,10 +260,32 @@ public class CatGame : MonoBehaviour
     }
 
 
-    public void ReturnToGame()
+    public void ReturnToGame(int currentScene)
     {
         // todo add level to file->build settings
-        Application.LoadLevel(0);
+        //m_game.LoadScene(currentScene, 0, false);
+
+
+        Destroy(m_catGame);
+        m_game.TriggerCamera(true);
+
+
+        string str;
+
+        if(m_result)
+        {
+            m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.");
+            m_game.MoveOnPath(3);
+        }
+        else
+        {
+            m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.");
+            m_game.MoveOnPath(-3);
+        }
+
+
+
+
     }
 
 
@@ -363,52 +408,41 @@ public class CatGame : MonoBehaviour
 
         private List<Vector2> m_debugPath;
 
-        /// Collision event. Pass the level and move to scene 6 (level passed)
-        /// If levels passed is more then m_totalLevels Win is triggered.
-        /// </summary>
-        /// <param name="gameTime">game time</param>
-        /// <param name="thisobj">this object</param>
-        /// <param name="other">other object</param>
-        void PassLevel(GameObject2D thisobj, GameObject2D other)
-        {
-            m_levelsPassed += 1;
-            if (m_levelsPassed >= m_totalLevels)
-            {
-                Win(thisobj, other);
-            }
-            else
-            {
-                EnterScene(6);
-            }
-        }
-
-
-        /// <summary>
-        /// Collision event. Triggers game win.
-        /// </summary>
-        /// <param name="gameTime">game time </param>
-        /// <param name="thisobj">this object</param>
-        /// <param name="other">other object</param>
-        void Win(GameObject2D thisobj, GameObject2D other)
-        {
-            EnterScene(4);
-        }
+    
 
     /// <summary>
     /// The scene switches to losing screen.
     /// </summary>
     public void Lose()
     {
-        EnterScene(6);
+        m_result = false;
+        ReturnToGame(m_currentLevel + 1);
+        //m_game.LoadScene(m_currentLevel+1,4,true);
     }
 
-    
-    
-        /// <summary>
-        /// Load and start the scene of chosen index.
-        /// </summary>
-        /// <param name="scn">Index of scene in m_scenes.</param>
-        public void EnterScene(int scn)
+    /// <summary>
+    /// The scene switches to winning screen.
+    /// </summary>
+    public void Win()
+    {
+        m_result = true;
+
+        ReturnToGame(m_currentLevel + 1);
+
+        //m_game.LoadScene(m_currentLevel + 1, 3, true);
+    }
+
+    bool m_result;
+
+
+
+    /// <summary>
+    /// Load and start the scene of chosen index.
+    /// </summary>
+    /// <param name="scn">Index of scene in m_scenes.</param>
+    /// 
+    /*
+    public void EnterScene(int scn)
         {
 
         Application.LoadLevel(scn);
@@ -439,18 +473,6 @@ public class CatGame : MonoBehaviour
                     m_levelsPassed = 2;
                     Level3Init();
                     break;
-                case 3:
-                    LoseSceneInit();
-                    break;
-                case 4:
-                    WinSceneInit();
-                    break;
-                case 5:
-                    StartSceneInit();
-                    break;
-                case 6:
-                    NextLevelSceneInit();
-                    break;
             }
 
             currentScene = scn;
@@ -462,161 +484,13 @@ public class CatGame : MonoBehaviour
             m_currentLevel = 0;
             EnterScene(0);
         }
+    */
 
-        //AnimatedSprite m_shadow;
-
-        /// <summary>
-        /// Initialise global objects before starting scenes.
-        /// </summary>
-        void GlobalObjectsInit()
+    /// <summary>
+    /// Initialise global objects before starting scenes.
+    /// </summary>
+    void GlobalObjectsInit()
         {
-        /*
-            m_quendaSpritesUD = GetTex("quendaspritesheet");
-            m_playerRunUp = new AnimatedSprite(m_quendaSpritesUD, 1, 5);
-            m_playerIdle = new AnimatedSprite(m_quendaSpritesUD, 1, 5, 4, 5);
-            m_bush2D = GetTex("bush");
-            Texture2D texcat = GetTex("cat_fluffy");
-            m_enemyWalk = new AnimatedSprite(texcat, 8, 12, 48, 51);
-            m_enemyWalk.FlipVertical(true);
-            m_enemyWalk.playSpeed = 0.5f;
-
-
-
-            m_player.scale = new Vector2(1f, 1f);
-
-            m_player.AddAnimSprite("runUp", m_playerRunUp);
-            m_player.AddAnimSprite("idle", m_playerIdle);
-            m_player.SetAnim("idle");
-            m_player.defaultAnim = "idle";
-
-            //m_enemy1.collisions = false;
-
-
-
-            m_enemy1.scale = new Vector2(1f, 1f);
-            m_enemy1.AddAnimSprite("walk", m_enemyWalk);
-            m_enemy1.SetAnim("walk");
-
-            m_enemy2.scale = new Vector2(1f, 1f);
-            m_enemy2.AddAnimSprite("walk", m_enemyWalk);
-            m_enemy2.SetAnim("walk");
-
-
-            m_enemy3.scale = new Vector2(1f, 1f);
-            m_enemy3.AddAnimSprite("walk", m_enemyWalk);
-            m_enemy3.SetAnim("walk");
-
-
-            m_enemy4.scale = new Vector2(1f, 1f);
-            m_enemy4.AddAnimSprite("walk", m_enemyWalk);
-            m_enemy4.SetAnim("walk");
-
-            m_winScreen = new AnimatedSprite(GetTex("winscreen"), 1, 1);
-            m_loseScreen = new AnimatedSprite(GetTex("losescreen"), 1, 1);
-
-
-            AnimatedSprite bush = new AnimatedSprite(m_bush2D);
-            m_bush1.AddAnimSprite("idle", bush);
-            m_bush1.scale = new Vector2(1f, 1f);
-            m_bush1.SetAnim("idle");
-
-
-            m_bush2.AddAnimSprite("idle", bush);
-            m_bush2.scale = new Vector2(1f, 1f);
-            m_bush2.SetAnim("idle");
-
-            m_bush3 = new HideLoc("bush3", m_bush1);
-            m_bush3.SetAnim("idle");
-
-            m_bush4 = new HideLoc("bush4", m_bush1);
-            m_bush4.SetAnim("idle");
-
-            m_bush5 = new HideLoc("bush5", m_bush1);
-            m_bush5.SetAnim("idle");
-
-            // Collision triggers
-
-
-
-            m_endspr = new AnimatedSprite(GetTex("exit"));
-
-            m_grass = new AnimatedSprite(GetTex("grass"));
-            m_grassObj = new GameObject2D("grass", "grass");
-            m_grassObj.AddAnimSprite("grassspr", m_grass);
-            m_grassObj.SetAnim("grassspr");
-            m_grassObj.SetPos2D(m_grid.GetPoint(0.5f, 0.5f));
-
-            //m_grassObj.scale = new Vector2();//2*screenWidth / (m_grass.texture.Width),2* screenHeight / (m_grass.texture.Height));
-            m_grassObj.ScaleToSpriteSize(new Vector2(screenWidth, screenHeight));
-            //m_grassObj.scale = new Vector2(3, 3);
-            //m_grassObj.scale *= 2;
-
-
-            m_end.SetPos2D(m_grid.GetPoint(0.99f, 0.5f));
-            Vector2 pointa = m_grid.GetPoint(0.9f, 0.01f);
-            Vector2 pointb = m_grid.GetPoint(0.99f, 0.99f);
-            m_end.SetCustomBoundingBox(new Rectangle((int)pointa.X, (int)pointa.Y, (int)(pointb.X - pointa.X), (int)(pointb.Y - pointa.Y)));
-            m_end.AddAnimSprite("default", m_endspr);
-            m_end.SetAnim("default");
-            m_end.scale = new Vector2(3f, 1f);
-
-            m_nextLevelScreen = new AnimatedSprite((GetTex("completearea")));
-
-
-            m_btnQuit.AddAnimSprite("Up", new AnimatedSprite(GetTex("btnquit")));
-            m_btnQuit.SetAnim("Up");
-
-            m_btnContinue.AddAnimSprite("Up", new AnimatedSprite(GetTex("btncontinue")));
-            m_btnContinue.SetAnim("Up");
-
-            m_btnRestart.AddAnimSprite("Up", new AnimatedSprite(GetTex("btnrestart")));
-            m_btnRestart.SetAnim("Up");
-
-            m_shadow = new AnimatedSprite(GetTex("dropshadow"));
-
-
-            switch (difficulty)
-            {
-                case 0:
-                    m_enemy1.viewDist = 100;
-                    m_enemy1.SetMoveSpeed(m_easySpeed);
-                    m_enemy2.viewDist = 100;
-                    m_enemy2.SetMoveSpeed(m_easySpeed);
-                    m_enemy3.viewDist = 100;
-                    m_enemy3.SetMoveSpeed(m_easySpeed);
-                    m_enemy4.viewDist = 100;
-                    m_enemy4.SetMoveSpeed(m_easySpeed);
-                    break;
-
-                case 1:
-                    m_enemy1.viewDist = Utility.Max(Game1.screenWidth, Game1.screenHeight);
-                    m_enemy1.SetMoveSpeed(m_normalSpeed);
-                    m_enemy2.viewDist = Utility.Max(Game1.screenWidth, Game1.screenHeight);
-                    m_enemy2.SetMoveSpeed(m_normalSpeed);
-                    m_enemy3.viewDist = Utility.Max(Game1.screenWidth, Game1.screenHeight);
-                    m_enemy3.SetMoveSpeed(m_normalSpeed);
-                    m_enemy4.viewDist = Utility.Max(Game1.screenWidth, Game1.screenHeight);
-                    m_enemy4.SetMoveSpeed(m_normalSpeed);
-
-                    break;
-
-                case 2:
-                    m_enemy1.viewDist = Utility.Max(Game1.screenWidth, Game1.screenHeight);
-                    m_enemy1.SetMoveSpeed(m_hardSpeed);
-                    m_enemy2.viewDist = Utility.Max(Game1.screenWidth, Game1.screenHeight);
-                    m_enemy2.SetMoveSpeed(m_hardSpeed);
-                    m_enemy3.viewDist = Utility.Max(Game1.screenWidth, Game1.screenHeight);
-                    m_enemy3.SetMoveSpeed(m_hardSpeed);
-                    m_enemy4.viewDist = Utility.Max(Game1.screenWidth, Game1.screenHeight);
-                    m_enemy4.SetMoveSpeed(m_hardSpeed);
-
-                    break;
-                default:
-                    Console.WriteLine("No difficulty level set.");
-                    Console.ReadKey();
-                    break;
-            }
-        */
         }
 
         /// <summary>
@@ -669,49 +543,31 @@ public class CatGame : MonoBehaviour
         float m_hardSpeed = 0.2f;
 
 
-
-    IEnumerator LoadLevel1()
-    {
-
-        yield return new WaitForEndOfFrame();
-        Scene nextScene = SceneManager.GetSceneByBuildIndex(2);
-        yield return null;
-
-        SceneManager.UnloadSceneAsync(1);
-
-        yield return null;
-        SceneManager.LoadScene(nextScene.buildIndex, LoadSceneMode.Additive);
-
-        yield return null;
-
-        SceneManager.SetActiveScene(nextScene);
-        yield return null;
-
-    }
     /// <summary>
     /// Init level 1
     /// </summary>
     void Level1Init()
         {
 
-        LoadLevel1();
+        m_game.LoadScene(1,2,true);
 
-
+        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(m_layout1);
+      
+        //SceneManager.MoveGameObjectToScene(this.gameObject, SceneManager.GetSceneByName("CatGame"));
+        //SceneManager.MoveGameObjectToScene(m_layout1, SceneManager.GetActiveScene());
         //SceneManager.MoveGameObjectToScene(gameObject, nextScene);
 
         //GameObject[] goArray = SceneManager.GetSceneByBuildIndex(1).GetRootGameObjects();
 
-        SceneManager.MoveGameObjectToScene(this.gameObject, SceneManager.GetActiveScene());
-        SceneManager.MoveGameObjectToScene(m_camera, SceneManager.GetActiveScene());
-        SceneManager.MoveGameObjectToScene(m_enemy, SceneManager.GetActiveScene());
-        SceneManager.MoveGameObjectToScene(m_player, SceneManager.GetActiveScene());
-        SceneManager.MoveGameObjectToScene(m_bush, SceneManager.GetActiveScene());
-        
 
-        m_playerp.TriggerLife();
-        m_playerp.SetPos2D(m_grid.GetPointWorld(m_camerac, 0.1f, 0.1f));
+        //SceneManager.MoveGameObjectToScene(m_enemy, SceneManager.GetActiveScene());
+        //SceneManager.MoveGameObjectToScene(m_player, SceneManager.GetActiveScene());
+
         //m_playerp.TriggerLife();
-
+        //m_playerp.SetPos2D(m_grid.GetPointWorld(m_camerac, 0.1f, 0.1f));
+        //m_playerp.TriggerLife();
+        /*
         HideLoc m_bush1 = Instantiate(m_bush).GetComponent<HideLoc>();
         m_bush1.gameObject.SetActive(true);
         HideLoc m_bush2 = Instantiate(m_bush).GetComponent<HideLoc>();
@@ -723,8 +579,8 @@ public class CatGame : MonoBehaviour
         HideLoc m_bush4 = Instantiate(m_bush).GetComponent<HideLoc>();
         m_bush4.gameObject.SetActive(true);
 
-
-
+        */
+        /*
         m_bush1.SetPos2D(m_grid.GetPointWorld(m_camerac, 0.1f, 0.7f));
         m_bush2.SetPos2D(m_grid.GetPointWorld(m_camerac,0.3f, 0.3f));
         m_bush3.SetPos2D(m_grid.GetPointWorld(m_camerac,0.6f, 0.6f));
@@ -734,16 +590,15 @@ public class CatGame : MonoBehaviour
 
         
 
-        GameObject m_player1 = Instantiate(m_player);
-        Player m_player1p = m_player1.GetComponent<Player>();
+        //GameObject m_player1 = Instantiate(m_player);
+        //Player m_player1p = m_player1.GetComponent<Player>();
 
         m_playerp.SetPos2D(m_grid.GetPointWorld(m_camerac, 0.1f, 0.1f));
 
-        m_player = m_player1;
-        m_playerp = m_player1p;
+        //m_player = m_player1;
+        //m_playerp = m_player1p;
 
-        GameObject m_enemy1 = Instantiate(m_enemy);
-        Enemy m_enemy1e = m_enemy1.GetComponent<Enemy>();
+        
 
         List<Vector2> patrolPath = //new List<Vector2>(); patrolPath.Add(m_grid.GetPoint(0.9f, 0.9f));
         LoadVec2GridPathFromFile(m_enemyPaths[0]);
@@ -762,16 +617,39 @@ public class CatGame : MonoBehaviour
         m_enemy1e.SetPos2D(m_grid.GetPointWorld(m_camerac,0.3f, 0.2f));
 
         m_enemy1.SetActive(true);
+        */
+
+        m_playerp = m_layout1.GetComponentInChildren<Player>();
+        m_playerp.Set("player", "player", 10);
+
+        Enemy m_enemy1e = m_layout1.GetComponentInChildren<Enemy>();
+
+
+
+        //List<Vector2> patrolPath = //new List<Vector2>(); patrolPath.Add(m_grid.GetPoint(0.9f, 0.9f));
+        //LoadVec2GridPathFromFile(m_enemyPaths[0]);
+        m_enemy1e.Set("enemy", "enemy", 10, 1f, 10f,Enemy.EnemyState.patrolling);
+        /*
+        for (int i = 0; i < patrolPath.Count; i++)
+        {
+            Vector2 world = m_camerac.ScreenToWorldPoint(new Vector3(patrolPath[i].x, patrolPath[i].y, 1f));
+            patrolPath[i] = world;
+        }
+        */
+        //m_enemy1e.SetEnemyState(Enemy.EnemyState.patrolling);
+        m_enemy1e.StartPatrol(1);
+
         // todo remove
         difficulty = 0;
         
         if(difficulty == 0)
         {
-            m_enemy1e.SetMoveSpeed(0.01f);
-            m_enemy1e.viewDist = 0.1f;
+            m_enemy1e.SetMoveSpeed(m_enemyMoveSpeedEasy* (Screen.height+Screen.width));
+            m_enemy1e.viewDist = Utility.Max(Screen.width, Screen.height); ;
+            m_playerp.GetComponent<Movement>().speed = (m_playerMoveSpeedEasy * (Screen.height + Screen.width));
         }
 
-        m_player1.SetActive(true);
+       // m_player1.SetActive(true);
 
 
 
@@ -1098,29 +976,7 @@ public class CatGame : MonoBehaviour
             */
 
         }
-
-        void LoseSceneInit()
-        {
-        /*
-            m_loseScene = new Scene();
-            GameObject2D loseScreen = new GameObject2D("loseScreen", "UI");
-            loseScreen.AddAnimSprite("default", m_loseScreen);
-            loseScreen.SetAnim("default");
-            loseScreen.SetPos2D(m_grid.GetPoint(0.5f, 0.5f));
-            m_loseScene.AddObject(loseScreen);
-
-
-            m_btnRestart.SetPos2D(m_grid.GetPoint(0.57f, 0.85f));
-
-            m_btnQuit.SetPos2D(m_grid.GetPoint(0.43f, 0.85f));
-
-            m_loseScene.AddObject(m_btnRestart);
-
-            m_loseScene.AddObject(m_btnQuit);
-
-            m_scenes[3] = m_loseScene;
-            */
-        }
+    
 
         void WinSceneInit()
         {

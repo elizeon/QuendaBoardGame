@@ -39,10 +39,12 @@ public class GameNode : Node
         //yield return new WaitForEndOfFrame();
 
         //SceneManager.UnloadSceneAsync(0);
+        game.TriggerCamera(false);
+        game.LoadScene(0, 1, true);
 
-        SceneManager.LoadScene(1, LoadSceneMode.Single);
+        //SceneManager.LoadScene(1, LoadSceneMode.Single);
 
-        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
+        //SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
 
     }
 }
