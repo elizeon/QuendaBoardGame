@@ -85,6 +85,13 @@
     <Compile Include="Assets\CatMinigame\Rectangle.cs" />
     <Compile Include="Assets\CatMinigame\Table.cs" />
     <Compile Include="Assets\CatMinigame\Utility.cs" />
+    <Compile Include="Assets\FoodMiniGame\Food.cs" />
+    <Compile Include="Assets\FoodMiniGame\FoodGameManager.cs" />
+    <Compile Include="Assets\FoodMiniGame\FoodSpawner.cs" />
+    <Compile Include="Assets\FoodMiniGame\Movement.cs" />
+    <Compile Include="Assets\FoodMiniGame\Quenda.cs" />
+    <Compile Include="Assets\FoodMiniGame\QuendaVision.cs" />
+    <Compile Include="Assets\FoodMiniGame\Rabbit.cs" />
     <Compile Include="Assets\Game.cs" />
     <Compile Include="Assets\MessageBox.cs" />
     <Compile Include="Assets\Nodes\CrossroadsNode.cs" />
@@ -94,6 +101,7 @@
     <Compile Include="Assets\Nodes\Node.cs" />
     <Compile Include="Assets\Nodes\QuizNode.cs" />
     <Compile Include="Assets\Nodes\StartNode.cs" />
+    <Compile Include="Assets\PathNode.cs" />
     <Compile Include="Assets\Quiz.cs" />
     <Compile Include="Assets\QuizScreen.cs" />
   </ItemGroup>
@@ -103,6 +111,7 @@
     <None Include="Assets\CatMinigame\enemy3.txt" />
     <None Include="Assets\CatMinigame\enemy4.txt" />
     <None Include="Assets\CatMinigame\enemy5.txt" />
+    <None Include="Assets\Materials\UnlitNoCull.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

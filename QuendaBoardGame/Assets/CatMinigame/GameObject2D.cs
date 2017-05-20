@@ -70,52 +70,6 @@ public class GameObject2D : MonoBehaviour {
         get { return m_id; }
         set { m_id = value; }
     }
-
-    /// <summary>
-    /// Constructor with HP. Makes new object with given HP. (0 if invincible)
-    /// </summary>
-    /// <param name="newid">Unique string ID of object.</param>
-    /// <param name="newtype">Type of object, eg. enemy, NPC.</param>
-    /// <param name="maxHP">Object's max HP. 0 if invincible object.</param>
-    public GameObject2D(string newid, string newtype, float maxHP) : this(newid, newtype)
-    {
-        hp = maxHP;
-    }
-
-    /// <summary>
-    /// Basic constructor. Makes new object with 0 (invincible) HP.
-    /// </summary>
-    /// <param name="newid">Unique string ID of object.</param>
-    /// <param name="newtype">Type of object, eg. enemy, NPC.</param>
-    public GameObject2D(string newid, string newtype)
-    {
-
-    /*
-        m_animSprites = new Dictionary<string, AnimatedSprite>();
-
-        animSprites["default"] = new AnimatedSprite(null, 1, 1);
-        animSprite = animSprites["default"];
-        */
-        m_id = newid;
-        m_type = newtype;
-        hp = 0;
-        direction = new Vector2(0, 0);
-        //targetDirection = new Vector2(direction.X,direction.Y);
-        rotation = 0;
-        //targetRotation = 0;
-
-        //m_boundingBox = new Rectangle(-10000,-10000,1,1);
-
-        //m_scale = new Vector2(1, 1);
-        m_scale = new Vector2(1, 1);
-
-
-        maxX = 0;
-        maxY = 0;
-
-
-
-    }
     
     /// <summary>
     /// The 2D position of the gameobject
@@ -417,6 +371,7 @@ public class GameObject2D : MonoBehaviour {
             visible = true;
             collisions = true;
             active = true;
+            hp = maxHP;
             usingCustomBBox = false;
         }
 

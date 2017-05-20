@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class Game : MonoBehaviour
 
@@ -19,6 +21,9 @@ public class Game : MonoBehaviour
 
     [SerializeField]
     GameObject m_player;
+
+    [SerializeField]
+    Camera m_camera;
 
     public GameObject player { get { return m_player; } }
 
@@ -38,6 +43,10 @@ public class Game : MonoBehaviour
     public GameObject crossroadsMsgBox { get { return m_crossroadsMsgBox; } }
 
 
+    public void TriggerCamera(bool active)
+    {
+        m_camera.gameObject.SetActive(active);
+    }
     // Use this for initialization
     void Start()
     {
@@ -188,6 +197,66 @@ public class Game : MonoBehaviour
         }
         return false;
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="oldSceneBuildIndex"></param>
+    /// <param name="newSceneBuildIndex"></param>
+    /// <returns></returns>
+    IEnumerator LoadSceneCoroutine(int oldSceneBuildIndex, int newSceneBuildIndex, bool additive)
+    {
+
+        bool complete = false;
+        while (complete == false)
+        {
+            Scene nextScene = SceneManager.GetSceneByBuildIndex(newSceneBuildIndex);
+            yield return new WaitForEndOfFrame();
+
+            //SceneManager.UnloadSceneAsync(oldSceneBuildIndex);//SceneManager.GetActiveScene().buildIndex);
+
+            //yield return new WaitForEndOfFrame();
+            if (additive)
+            {
+                SceneManager.LoadScene(newSceneBuildIndex, LoadSceneMode.Additive);
+
+            }
+            else
+            {
+                SceneManager.LoadScene(newSceneBuildIndex, LoadSceneMode.Single);
+
+            }
+
+            yield return new WaitForEndOfFrame();
+
+
+
+            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(newSceneBuildIndex));
+            complete = true;
+        }
+        yield return null;
+
+    }
+
+
+    public void LoadScene(int oldSceneBuildIndex, int newSceneBuildIndex, bool additive)
+    {
+
+        if (additive)
+        {
+
+            StartCoroutine(LoadSceneCoroutine(oldSceneBuildIndex, newSceneBuildIndex, additive));
+
+        }
+        else
+        {
+            StartCoroutine(LoadSceneCoroutine(oldSceneBuildIndex, newSceneBuildIndex, additive));
+
+        }
+
+    }
+
     // Update is called once per frame
     void Update()
     {

@@ -14,6 +14,7 @@ public class HideLoc : GameObject2D
 	void Update () {
 		
 	}
+    /*
         public HideLoc(string newid, string newtype, float newhp) : base(newid, newtype, newhp)
         {
 
@@ -31,7 +32,7 @@ public class HideLoc : GameObject2D
             this.scale = otherloc.scale;
             //this.animSprite = new AnimatedSprite(otherloc.animSprite);
         }
-
+        */
     /*
         public override void Render(SpriteBatch sprbat)
         {
@@ -39,4 +40,4 @@ public class HideLoc : GameObject2D
 
         }
         */
-    }
+}

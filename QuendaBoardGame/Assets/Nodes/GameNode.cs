@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Todo make member variables private for all these classes.
@@ -23,5 +24,27 @@ public class GameNode : Node
         {
 
         }
+        if (m_gameType == GameType.cat)
+        {
+            Debug.Log("Loading cat game!");
+            LoadCatGame();
+        }
+    }
+
+
+
+    void LoadCatGame()
+    {
+
+        //yield return new WaitForEndOfFrame();
+
+        //SceneManager.UnloadSceneAsync(0);
+        game.TriggerCamera(false);
+        game.LoadScene(0, 1, true);
+
+        //SceneManager.LoadScene(1, LoadSceneMode.Single);
+
+        //SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
+
     }
 }
