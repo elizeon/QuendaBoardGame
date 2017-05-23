@@ -30,21 +30,13 @@ public class GameNode : Node
             LoadCatGame();
         }
     }
-
-
-
+    
     void LoadCatGame()
     {
-
-        //yield return new WaitForEndOfFrame();
-
-        //SceneManager.UnloadSceneAsync(0);
+        game.scene.SetActive(false);
         game.TriggerCamera(false);
+        game.DisallowStartMovement();
         game.LoadScene(0, 1, true);
-
-        //SceneManager.LoadScene(1, LoadSceneMode.Single);
-
-        //SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
-
+        
     }
 }

@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Cat.cs" />
     <Compile Include="Assets\CatMinigame\2DUtil.cs" />
     <Compile Include="Assets\CatMinigame\CatGame.cs" />
     <Compile Include="Assets\CatMinigame\Enemy.cs" />

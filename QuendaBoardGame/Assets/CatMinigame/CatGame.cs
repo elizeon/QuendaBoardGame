@@ -265,21 +265,22 @@ public class CatGame : MonoBehaviour
         // todo add level to file->build settings
         //m_game.LoadScene(currentScene, 0, false);
 
+        m_game.scene.SetActive(true);
 
         Destroy(m_catGame);
         m_game.TriggerCamera(true);
-
+        m_game.AllowStartMovement();
 
         string str;
 
         if(m_result)
         {
-            m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.");
+            m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.",true);
             m_game.MoveOnPath(3);
         }
         else
         {
-            m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.");
+            m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.",true);
             m_game.MoveOnPath(-3);
         }
 
