@@ -36,6 +36,13 @@ public class QuizScreen : MonoBehaviour
     [SerializeField]
     GameObject m_questionText;
 
+    private Quiz m_quiz;
+
+    public void SetQuiz(Quiz val)
+    {
+        m_quiz = val;
+    }
+
     [SerializeField]
     GameObject m_canvas;
 

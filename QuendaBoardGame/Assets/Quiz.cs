@@ -15,4 +15,5 @@ public class Quiz
     public string incorrectMessage = "";
     public string hint = "";
     public int answer = 1;
+    public string name = "";
 }

@@ -274,12 +274,12 @@ public class CatGame : MonoBehaviour
 
         if(m_result)
         {
-            m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.");
+            m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.",true);
             m_game.MoveOnPath(3);
         }
         else
         {
-            m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.");
+            m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.",true);
             m_game.MoveOnPath(-3);
         }
 
