@@ -123,12 +123,18 @@ public class Enemy : GameObject2D
 
         }
 
-        Vector2 patrolLoc = m_patrolPath.transform.GetChild(m_patrolIndex).position;
+
+        GameObject patrolNext = m_patrolPath.transform.GetChild(m_patrolIndex).gameObject;
+        Vector2 patrolLoc = patrolNext.transform.position;
 
 
         if (!_2DUtil.IsAt(this.pos2D, patrolLoc))
             {
                 Debug.Log("Moving towards next patrol point. ");
+
+                Quaternion rotation = Quaternion.LookRotation(patrolNext.transform.position - transform.position, transform.TransformDirection(Vector3.up));
+                transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+                
                 _2DUtil.PrintVec(patrolLoc);
 
                 //m_currentMoveSpeed = 1000;

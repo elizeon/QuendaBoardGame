@@ -179,13 +179,16 @@ public class QuizScreen : MonoBehaviour
 
         if (i == m_answer)
         {
-            message= m_correctMessage;
+            message= m_correctMessage + " Move forward 3 spaces.";
+            m_game.AllowStartMovement();
             m_game.MoveOnPath(3);
 
         }
         else
         {
-            message =m_incorrectMessage;
+            message =m_incorrectMessage + "Move back 3 spaces.";
+            m_game.AllowStartMovement();
+
             m_game.MoveOnPath(-3);
 
         }

@@ -265,10 +265,11 @@ public class CatGame : MonoBehaviour
         // todo add level to file->build settings
         //m_game.LoadScene(currentScene, 0, false);
 
+        m_game.scene.SetActive(true);
 
         Destroy(m_catGame);
         m_game.TriggerCamera(true);
-
+        m_game.AllowStartMovement();
 
         string str;
 
