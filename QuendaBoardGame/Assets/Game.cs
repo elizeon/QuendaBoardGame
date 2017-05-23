@@ -14,6 +14,8 @@ public class Game : MonoBehaviour
     public List<Quiz> quizzes { get { return m_quizzes; } }
 
     [SerializeField]
+    public GameObject scene;
+    [SerializeField]
     bool debug;
 
     [SerializeField]
@@ -21,6 +23,9 @@ public class Game : MonoBehaviour
 
     [SerializeField]
     GameObject m_player;
+
+    [SerializeField]
+    GameObject m_playerMesh;
 
     [SerializeField]
     Camera m_camera;
@@ -51,8 +56,8 @@ public class Game : MonoBehaviour
     void Start()
     {
 
-        m_currentNode = m_allPaths[0].list[0].GetComponent<Node>();
-        m_currentPath = m_allPaths[0].list;
+        m_currentNode = m_allPaths[0].transform.GetChild(0).GetComponent<Node>();
+        m_currentPath = m_allPaths[0];
         m_currentTileIndex = 0;
         Debug.Log("Test controls - keys 1-6: move 1 to 6 tiles. B: move random number between 1-6");
         m_canMove = true;
@@ -69,6 +74,51 @@ public class Game : MonoBehaviour
         a.correctMessage = "Correct! Quenda poo helps plants grow.";
         a.incorrectMessage = "Incorrect. Quendas benefit plant growth.";
         a.hint = "Hint: Quendas eat (and poop) underground insects, fungi and plant matter.";
+        a.answer = 2;
+        m_quizzes.Add(a);
+
+        a = new Quiz();
+        a.question = "You wonder if you should go search for water. How often do Quendas need water?";
+        a.quizNode1 = "Often - Quendas need to live in an area with frequent sources of fresh water.";
+        a.quizNode2 = "Not often, they get most of the hydration they need from food.";
+        a.correctMessage = "Correct! Quendas get most of the hydration they need from food.";
+        a.incorrectMessage = "Incorrect. Quendas get most of the hydration they need from food.";
+        a.hint = " ";
+        a.answer = 2;
+        m_quizzes.Add(a);
+
+        a = new Quiz();
+        a.question = "You want to find a nice place to stay for a while. What makes a garden or land beneficial to Quendas?";
+        a.quizNode1 = "Don't offer Quendas food too often, have a large area, grow dense low vegetation, keep predators out, and monitor the Quendas to help research.";
+        a.quizNode2 = "Offer them food, have a small area, grow sparse low vegetation, encourage all wildlife, and leave the Quendas alone.";
+        a.quizNode3 = "Don't offer Quendas food too often, have a large area, grow lots of grass, keep predators out, and leave the Quendas alone.";
+        a.quizNode4 = "Offer them food, have a large area, grow dense low vegetation, keep predators out, and monitor the Quendas to help research.";
+        a.correctMessage = "Correct! Not feeding Quendas too much stops them from starving if you leave. A large area allows them to find territory. Dense low vegetation and few predators provides safety, and helping research Quendas can improve our understanding.";
+        a.incorrectMessage = "Incorrect. Not feeding Quendas too much stops them from starving if you leave. A large area allows them to find territory. Dense low vegetation and few predators provides safety, and helping research Quendas can improve our understanding.";
+        a.hint = "Hint: Offering Quendas food often can make them dependent on you.";
+        a.answer = 1;
+        m_quizzes.Add(a);
+
+        a = new Quiz();
+        a.question = "You want to decide when to start moving and searching for food today. When are Quendas most active?";
+        a.quizNode1 = "Sunrise.";
+        a.quizNode2 = "Midday.";
+        a.quizNode3 = "Dusk.";
+        a.quizNode4 = "Night.";
+
+        a.correctMessage = "Correct! Quendas are usually most active at dusk.";
+        a.incorrectMessage = "Incorrect. Quendas are usually most active at dusk.";
+        a.hint = " ";
+        a.answer = 3;
+        m_quizzes.Add(a);
+
+        a = new Quiz();
+        a.question = "You find a quenda missing some fur and their tail. You should figure out why in case there is danger nearby. Why might a Quenda be missing their fur or tail?";
+        a.quizNode1 = "They shed and regrow their fur and tail.";
+        a.quizNode2 = "Males can fight for territory and mating.";
+        a.correctMessage = "Correct! Males can fight for territory and mating.";
+        a.incorrectMessage = "Incorrect. Males can fight for territory and mating.";
+        a.hint = " ";
         a.answer = 2;
         m_quizzes.Add(a);
     }
@@ -89,7 +139,7 @@ public class Game : MonoBehaviour
     /// <param name="index">Path index.</param>
     private void SetCurrentPath(int index)
     {
-        currentPath = allPaths[index].list;
+        currentPath = allPaths[index];
         SetCurrentNode(currentTileIndex);
 
     }
@@ -104,7 +154,7 @@ public class Game : MonoBehaviour
     {
         oldIndex = currentPathIndex;
         Debug.Log("Setting new path at start.");
-        currentPath = allPaths[index].list;
+        currentPath = allPaths[index];
         currentPathIndex = index;
         SetCurrentNode(0);
 
@@ -112,10 +162,10 @@ public class Game : MonoBehaviour
         {
             //if (lastNode.type == Node.NodeType.none)
             //{
-            if(m_tilesToMove>currentPath.Count)
+            if(m_tilesToMove>currentPath.transform.childCount)
             {
                 Debug.Log("Capping movement to new path's end.");
-                m_tilesToMove = currentPath.Count;
+                m_tilesToMove = currentPath.transform.childCount;
 
             }
             m_movingOnPath = true;
@@ -130,15 +180,15 @@ public class Game : MonoBehaviour
     {
         oldIndex = currentPathIndex;
         Debug.Log("Setting new path at end.");
-        currentPath = allPaths[index].list;
+        currentPath = allPaths[index];
         currentPathIndex = index;
-        SetCurrentNode(currentPath.Count - 1);
+        SetCurrentNode(currentPath.transform.childCount - 1);
 
         if (m_tilesToMove < 0)
         {
             //if (lastNode.type == Node.NodeType.none)
             //{
-            m_tilesToMove = -(currentPath.Count - (m_tilesToMove + 1));
+            m_tilesToMove = -(currentPath.transform.childCount - (m_tilesToMove + 1));
             //}
             m_movingOnPath = true;
         }
@@ -152,7 +202,7 @@ public class Game : MonoBehaviour
     /// <param name="index">Node index.</param>
     public void SetCurrentNode(int index)
     {
-        currentNode = currentPath[index].GetComponent<Node>();
+        currentNode = currentPath.transform.GetChild(index).GetComponent<Node>();
         m_currentTileIndex = index;
 
     }
@@ -160,17 +210,18 @@ public class Game : MonoBehaviour
 
 
     [SerializeField]
-    private List<ListWrapper> m_allPaths = new List<ListWrapper>();
+    private List<GameObject> m_allPaths = new List<GameObject>();
+    //private List<ListWrapper> m_allPaths = new List<ListWrapper>();
     /// <summary>
     /// A list of all paths in the game.
     /// </summary>
-    public List<ListWrapper> allPaths { get { return m_allPaths; } set { m_allPaths = value; } }
+    public List<GameObject> allPaths { get { return m_allPaths; } set { m_allPaths = value; } }
 
-    private List<GameObject> m_currentPath = new List<GameObject>();
+    private GameObject m_currentPath;
     /// <summary>
     /// The current path the player is on.
     /// </summary>
-    public List<GameObject> currentPath
+    public GameObject currentPath
     {
         get { return m_currentPath; }
         set { m_currentPath = value; }
@@ -257,6 +308,14 @@ public class Game : MonoBehaviour
 
     }
 
+    void SetPlayerAnimation(bool state)
+    {
+        if(player.GetComponentInChildren<Animator>().enabled != state)
+        {
+            player.GetComponentInChildren<Animator>().enabled = state;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -316,10 +375,28 @@ public class Game : MonoBehaviour
                     }
                     else
                     {
-                        m_movedTiles = 0;
-                        m_movingOnPath = false;
-                        m_currentNode.PerformAction();
+                        if (!messageBox.Active())
+                        {
+
+                            m_movedTiles = 0;
+                            m_movingOnPath = false;
+                            m_currentNode.PerformAction();
+                        }
+                        else
+                        {
+                            // Stops message box from resuming play, as there is a tile action in queue that
+                            // will not allow the player to move until it is complete.
+                            if(messageBox.canMoveOnResume)
+                            {
+                                messageBox.canMoveOnResume = false;
+                            }
+                        }
                     }
+
+                }
+                else
+                {
+                    SetPlayerAnimation(false);
 
                 }
             }
@@ -379,6 +456,11 @@ public class Game : MonoBehaviour
 
 
         }
+        else
+        {
+            SetPlayerAnimation(false);
+
+        }
 
     }
 
@@ -391,35 +473,50 @@ public class Game : MonoBehaviour
 
     void GoToNextNode()
     {
+        SetPlayerAnimation(true);
         m_currentTileIndex += 1;
-        m_currentNode = m_currentPath[m_currentTileIndex].GetComponent<Node>();
+        m_currentNode = m_currentPath.transform.GetChild(m_currentTileIndex).GetComponent<Node>();
         m_currentNode.PerformAction();
+        m_playerMesh.transform.LookAt(m_currentNode.transform, new Vector3(0, 1, 0));
+
     }
 
     void GoToPrevNode()
     {
+        SetPlayerAnimation(true);
+
         m_currentTileIndex -= 1;
-        m_currentNode = m_currentPath[m_currentTileIndex].GetComponent<Node>();
+        m_currentNode = m_currentPath.transform.GetChild(m_currentTileIndex).GetComponent<Node>();
         m_currentNode.PerformAction();
+        m_playerMesh.transform.LookAt(m_currentNode.transform, new Vector3(0, 1, 0));
+
     }
 
     void GoToNextNodeWithoutEvent()
     {
+        SetPlayerAnimation(true);
+
         if (m_currentNode.type != Node.NodeType.merge)
         {
             m_currentTileIndex += 1;
         }
-        m_currentNode = m_currentPath[m_currentTileIndex].GetComponent<Node>();
+        m_currentNode = m_currentPath.transform.GetChild(m_currentTileIndex).GetComponent<Node>();
+        m_playerMesh.transform.LookAt(m_currentNode.transform, new Vector3(0, 1, 0));
+
 
     }
 
     void GoToPrevNodeWithoutEvent()
     {
+        SetPlayerAnimation(true);
+
         if (m_currentNode.type != Node.NodeType.merge && m_currentTileIndex > 0)
         {
             m_currentTileIndex -= 1;
         }
-        m_currentNode = m_currentPath[m_currentTileIndex].GetComponent<Node>();
+        m_currentNode = m_currentPath.transform.GetChild(m_currentTileIndex).GetComponent<Node>();
+        m_playerMesh.transform.LookAt(m_currentNode.transform, new Vector3(0, 1, 0));
+
 
     }
 

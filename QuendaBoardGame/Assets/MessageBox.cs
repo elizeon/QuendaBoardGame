@@ -12,6 +12,8 @@ public class MessageBox : MonoBehaviour
     GameObject m_canvas;
 
     bool m_canMoveOnResume = true;
+
+    public bool canMoveOnResume { get { return m_canMoveOnResume; } set { m_canMoveOnResume = value; } }
     // Use this for initialization
     void Start ()
     {
@@ -61,5 +63,14 @@ public class MessageBox : MonoBehaviour
     {
         m_canvas.SetActive(false);
 
+    }
+
+    public bool Active()
+    {
+        if(m_canvas.activeSelf)
+        {
+            return true;
+        }
+        return false;
     }
 }

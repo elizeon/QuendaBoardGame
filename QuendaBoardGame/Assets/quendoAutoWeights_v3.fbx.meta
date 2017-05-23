@@ -1,0 +1,201 @@
+fileFormatVersion: 2
+guid: 12c1b4e98de16014782c0b338bb015b1
+timeCreated: 1495480595
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: backfoot.l
+    100004: backfoot.r
+    100006: BackLegL_Ctrl
+    100008: backleglower.l
+    100010: backleglower.r
+    100012: BackLegR_Ctrl
+    100014: backlegupper.l
+    100016: backlegupper.r
+    100018: backtoe.l
+    100020: backtoe.l_end
+    100022: backtoe.r
+    100024: backtoe.r_end
+    100026: BackToeL_Ctrl
+    100028: BackToeR_Ctrl
+    100030: Circle001
+    100032: flexi_Spine01
+    100034: frontfoot.l
+    100036: frontfoot.r
+    100038: FrontLegL_Ctrl
+    100040: frontleglower.l
+    100042: frontleglower.r
+    100044: frontlegupper.l
+    100046: frontlegupper.r
+    100048: fronttoe.l
+    100050: fronttoe.l_end
+    100052: fronttoe.r
+    100054: fronttoe.r_end
+    100056: FrontToeL_Ctrl
+    100058: FrontToeR_Ctrl
+    100060: head
+    100062: head_end
+    100064: IK Chain001
+    100066: IK Chain002
+    100068: IK Chain003
+    100070: IK Chain004
+    100072: IK Chain005
+    100074: IK Chain006
+    100076: IK Chain007
+    100078: IK Chain008
+    100080: IK Chain009
+    100082: IK Chain010
+    100084: IK Chain011
+    100086: IK Chain012
+    100088: IK Chain013
+    100090: mid
+    100092: neck
+    100094: pCylinder1
+    100096: pelvis
+    100098: polySurface2
+    100100: polySurface2.001
+    100102: //RootNode
+    100104: RatG
+    100106: tail1
+    100108: tail2
+    100110: tail3
+    100112: tail4
+    100114: tail4_end
+    100116: Tail_IK_Ctrl
+    400000: Armature
+    400002: backfoot.l
+    400004: backfoot.r
+    400006: BackLegL_Ctrl
+    400008: backleglower.l
+    400010: backleglower.r
+    400012: BackLegR_Ctrl
+    400014: backlegupper.l
+    400016: backlegupper.r
+    400018: backtoe.l
+    400020: backtoe.l_end
+    400022: backtoe.r
+    400024: backtoe.r_end
+    400026: BackToeL_Ctrl
+    400028: BackToeR_Ctrl
+    400030: Circle001
+    400032: flexi_Spine01
+    400034: frontfoot.l
+    400036: frontfoot.r
+    400038: FrontLegL_Ctrl
+    400040: frontleglower.l
+    400042: frontleglower.r
+    400044: frontlegupper.l
+    400046: frontlegupper.r
+    400048: fronttoe.l
+    400050: fronttoe.l_end
+    400052: fronttoe.r
+    400054: fronttoe.r_end
+    400056: FrontToeL_Ctrl
+    400058: FrontToeR_Ctrl
+    400060: head
+    400062: head_end
+    400064: IK Chain001
+    400066: IK Chain002
+    400068: IK Chain003
+    400070: IK Chain004
+    400072: IK Chain005
+    400074: IK Chain006
+    400076: IK Chain007
+    400078: IK Chain008
+    400080: IK Chain009
+    400082: IK Chain010
+    400084: IK Chain011
+    400086: IK Chain012
+    400088: IK Chain013
+    400090: mid
+    400092: neck
+    400094: pCylinder1
+    400096: pelvis
+    400098: polySurface2
+    400100: polySurface2.001
+    400102: //RootNode
+    400104: RatG
+    400106: tail1
+    400108: tail2
+    400110: tail3
+    400112: tail4
+    400114: tail4_end
+    400116: Tail_IK_Ctrl
+    4300000: polySurface2.001
+    4300002: polySurface2
+    4300004: pCylinder1
+    7400000: Scene
+    9500000: //RootNode
+    13700000: pCylinder1
+    13700002: polySurface2
+    13700004: polySurface2.001
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
