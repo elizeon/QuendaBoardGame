@@ -32,11 +32,15 @@ public class FoodGameManager : MonoBehaviour {
         {
             m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.", true);
             m_game.MoveOnPath(3);
+            m_game.AddResult("Food Game", m_result);
+            m_game.SaveResults();
         }
         else
         {
             m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.", true);
             m_game.MoveOnPath(-3);
+            m_game.AddResult("Food Game", m_result);
+            m_game.SaveResults();
         }
     }
 

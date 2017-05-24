@@ -182,15 +182,14 @@ public class QuizScreen : MonoBehaviour
             message= m_correctMessage + " Move forward 3 spaces.";
             m_game.AllowStartMovement();
             m_game.MoveOnPath(3);
-
+            m_game.AddResult(m_quiz.name, true);
         }
         else
         {
             message =m_incorrectMessage + "Move back 3 spaces.";
             m_game.AllowStartMovement();
-
             m_game.MoveOnPath(-3);
-
+            m_game.AddResult(m_quiz.name, false);
         }
         //m_canvas.SetActive(false);
         ToggleElements(false);
