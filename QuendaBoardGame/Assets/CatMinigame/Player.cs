@@ -149,7 +149,7 @@ public class Player : GameObject2D
 
         if (m_playerMoving && !_2DUtil.IsAt(this.pos2D, m_targetLoc))
         {
-            _2DUtil.MoveTowards(this, m_targetLoc, Time.fixedDeltaTime * m_moveSpeed);
+            _2DUtil.MoveTowards(this, m_targetLoc, (float)Time.fixedDeltaTime * (float)m_moveSpeed);
             //Console.WriteLine(pos2D.X + ", " + pos2D.Y + " / " + patrolPath[m_patrolIndex].X + ", " + patrolPath[m_patrolIndex].Y);
 
             // todo set moving anim

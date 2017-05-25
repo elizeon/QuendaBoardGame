@@ -40,6 +40,8 @@ public class CatGame : MonoBehaviour
 
     Game m_game;
 
+
+
     /*
      * [SerializeField]
     GameObject m_grassObj;
@@ -264,10 +266,10 @@ public class CatGame : MonoBehaviour
     {
         // todo add level to file->build settings
         //m_game.LoadScene(currentScene, 0, false);
+        Destroy(m_catGame);
 
         m_game.scene.SetActive(true);
 
-        Destroy(m_catGame);
         m_game.TriggerCamera(true);
         m_game.AllowStartMovement();
 
@@ -277,11 +279,15 @@ public class CatGame : MonoBehaviour
         {
             m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.",true);
             m_game.MoveOnPath(3);
+            m_game.AddResult("Cat Game", m_result);
+            m_game.SaveResults();
         }
         else
         {
             m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.",true);
             m_game.MoveOnPath(-3);
+            m_game.AddResult("Cat Game", m_result);
+            m_game.SaveResults();
         }
 
 
@@ -305,7 +311,7 @@ public class CatGame : MonoBehaviour
         /// <summary>
         /// Difficulty, 0=easy, 1=med, 2=hard
         /// </summary>
-        public static int difficulty = 1;
+        public int difficulty = 1;
 
 
         // Content directories
@@ -641,16 +647,30 @@ public class CatGame : MonoBehaviour
         m_enemy1e.StartPatrol(1);
 
         // todo remove
-        difficulty = 0;
         
         if(difficulty == 0)
         {
-            m_enemy1e.SetMoveSpeed(m_enemyMoveSpeedEasy* (Screen.height+Screen.width));
-            m_enemy1e.viewDist = Utility.Max(Screen.width, Screen.height); ;
-            m_playerp.GetComponent<Movement>().speed = (m_playerMoveSpeedEasy * (Screen.height + Screen.width));
+            m_enemy1e.SetMoveSpeed(m_enemyMoveSpeedEasy * 1000);
+            m_enemy1e.viewDist = Utility.Max(Screen.width/4, Screen.height/4); ;
+            m_playerp.GetComponent<Movement>().speed = (m_playerMoveSpeedEasy * 1000);
         }
 
-       // m_player1.SetActive(true);
+        if (difficulty == 1)
+        {
+            m_enemy1e.SetMoveSpeed(m_enemyMoveSpeedEasy * 1600);
+            m_enemy1e.viewDist = Utility.Max(Screen.width/2, Screen.height/2); ;
+            m_playerp.GetComponent<Movement>().speed = (m_playerMoveSpeedEasy * 1600);
+        }
+
+
+        if (difficulty == 2)
+        {
+            m_enemy1e.SetMoveSpeed(m_enemyMoveSpeedEasy * 2500);
+            m_enemy1e.viewDist = Utility.Max(Screen.width, Screen.height); ;
+            m_playerp.GetComponent<Movement>().speed = (m_playerMoveSpeedEasy * 2500);
+        }
+
+        // m_player1.SetActive(true);
 
 
 

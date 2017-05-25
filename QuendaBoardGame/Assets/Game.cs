@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 
 public class Game : MonoBehaviour
@@ -12,6 +13,7 @@ public class Game : MonoBehaviour
     List<Quiz> m_quizzes = new List<Quiz>();
 
     public List<Quiz> quizzes { get { return m_quizzes; } }
+    private List<PlayerData> m_playerResults = new List<PlayerData>();
 
     [SerializeField]
     public GameObject scene;
@@ -52,6 +54,58 @@ public class Game : MonoBehaviour
     {
         m_camera.gameObject.SetActive(active);
     }
+
+    public void AddResult(string name, bool result)
+    {
+        bool exists = false;
+        for (int i = 0; i < m_playerResults.Count; i++)
+        {
+            if(m_playerResults[i].m_name == name)
+            {
+                exists = true;
+                m_playerResults[i].AddResult(result);
+            }
+        }
+
+        if (!exists)
+        {
+            PlayerData tmp = new PlayerData();
+            tmp.m_name = name;
+            tmp.AddResult(result);
+            m_playerResults.Add(tmp);
+        }
+       
+
+    }
+
+    public void SaveResults()
+    {
+        string folder = System.IO.Directory.GetCurrentDirectory();// + @"/Data";
+
+        System.IO.StreamWriter file = new System.IO.StreamWriter(folder + @"\PlayerData.txt");
+        file.Write("");
+        file.Close();
+
+        for (int i = 0; i < m_playerResults.Count; i++)
+        {
+            List<string> data = new List<string>();
+            data.Add(m_playerResults[i].m_name); 
+            for(int k = 0; k < m_playerResults[i].GetCount(); k++)
+            {
+                data.Add(",");
+                data.Add(m_playerResults[i].m_results[k].ToString());
+            }
+            data.Add("\r\n");
+            data.ToString();
+
+            using (StreamWriter outputFile = new StreamWriter(folder + @"\PlayerData.txt", true))
+            {
+                foreach (string line in data)
+                    outputFile.Write(line);
+            }
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -67,6 +121,7 @@ public class Game : MonoBehaviour
 
         Quiz a;
         a = new Quiz();
+        a.name = "Environment";
         a.question = "How do Quendas help the environment?";
         a.quizNode1 = "Control introduced insect pests.";
         a.quizNode2 = "Benefit plant growth.";
@@ -78,6 +133,7 @@ public class Game : MonoBehaviour
         m_quizzes.Add(a);
 
         a = new Quiz();
+        a.name = "Water";
         a.question = "You wonder if you should go search for water. How often do Quendas need water?";
         a.quizNode1 = "Often - Quendas need to live in an area with frequent sources of fresh water.";
         a.quizNode2 = "Not often, they get most of the hydration they need from food.";
@@ -88,6 +144,7 @@ public class Game : MonoBehaviour
         m_quizzes.Add(a);
 
         a = new Quiz();
+        a.name = "Garden";
         a.question = "You want to find a nice place to stay for a while. What makes a garden or land beneficial to Quendas?";
         a.quizNode1 = "Don't offer Quendas food too often, have a large area, grow dense low vegetation, keep predators out, and monitor the Quendas to help research.";
         a.quizNode2 = "Offer them food, have a small area, grow sparse low vegetation, encourage all wildlife, and leave the Quendas alone.";
@@ -100,6 +157,7 @@ public class Game : MonoBehaviour
         m_quizzes.Add(a);
 
         a = new Quiz();
+        a.name = "Active";
         a.question = "You want to decide when to start moving and searching for food today. When are Quendas most active?";
         a.quizNode1 = "Sunrise.";
         a.quizNode2 = "Midday.";
@@ -113,6 +171,7 @@ public class Game : MonoBehaviour
         m_quizzes.Add(a);
 
         a = new Quiz();
+        a.name = "Missing";
         a.question = "You find a quenda missing some fur and their tail. You should figure out why in case there is danger nearby. Why might a Quenda be missing their fur or tail?";
         a.quizNode1 = "They shed and regrow their fur and tail.";
         a.quizNode2 = "Males can fight for territory and mating.";

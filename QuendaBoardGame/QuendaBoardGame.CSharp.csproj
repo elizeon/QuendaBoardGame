@@ -75,6 +75,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CardGame\Scripts\Card.cs" />
+    <Compile Include="Assets\CardGame\Scripts\GameManager.cs" />
+    <Compile Include="Assets\CardGame\Scripts\MenuBehaviour.cs" />
     <Compile Include="Assets\Cat.cs" />
     <Compile Include="Assets\CatMinigame\2DUtil.cs" />
     <Compile Include="Assets\CatMinigame\CatGame.cs" />
@@ -104,6 +107,7 @@
     <Compile Include="Assets\Nodes\QuizNode.cs" />
     <Compile Include="Assets\Nodes\StartNode.cs" />
     <Compile Include="Assets\PathNode.cs" />
+    <Compile Include="Assets\PlayerData.cs" />
     <Compile Include="Assets\Quiz.cs" />
     <Compile Include="Assets\QuizScreen.cs" />
   </ItemGroup>

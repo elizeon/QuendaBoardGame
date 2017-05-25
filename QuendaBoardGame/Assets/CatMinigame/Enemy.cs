@@ -176,7 +176,7 @@ public class Enemy : GameObject2D
                 
                 direction = catGame.player.pos2D - this.pos2D;
                 direction.Normalize();
-                SetPos2D( Vector3.MoveTowards(pos2D, catGame.player.pos2D, Time.fixedDeltaTime * m_currentMoveSpeed));
+                SetPos2D( Vector3.MoveTowards(pos2D, catGame.player.pos2D, (float)Time.fixedDeltaTime * (float)m_currentMoveSpeed));
                 //_2DUtil.MoveTowards(this, catGame.player.pos2D, Time.fixedDeltaTime * m_currentMoveSpeed);
             }
         }

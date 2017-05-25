@@ -11,12 +11,10 @@ public class Effect : MonoBehaviour
 }
 
 public class Quenda : MonoBehaviour {
-    private float hunger;
+    public float hunger;
     private List<Effect> effects;
     private bool digCompleted;
     public float speed;
-    public string digKey;
-    public string quendaVisionKey;
 
 	// Use this for initialization
 	void Start () {
@@ -49,32 +47,20 @@ public class Quenda : MonoBehaviour {
         hunger -= (Time.deltaTime * hungerMod);
         GetComponent<Movement>().speed = speed * speedModifier;
         GetComponent<Movement>().dirFlip = flipModifier;
-
-        if (Input.GetButtonDown(digKey))
-        {
-
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Food"))
+        if (collision.gameObject.CompareTag("Food") || collision.gameObject.CompareTag("Buried"))
         {
             Effect n = new Effect();
             n.speedMultiplier = collision.GetComponent<Food>().m_characterEffectSpeed;
             n.flipModifier = collision.GetComponent<Food>().m_characterEffectFlip;
             n.hungerGenerationModifier = collision.GetComponent<Food>().m_characterEffectHunger;
             n.duration = collision.GetComponent<Food>().m_characterEffectDuration;
+            hunger += collision.GetComponent<Food>().m_hungerEffect;
             Object.Destroy(collision.gameObject);
             effects.Add(n);
-        }
-
-        if (!(collision.gameObject.CompareTag("Buried")))
-        {
-            if (Input.GetButtonDown(digKey))
-            {
-                Object.Destroy(collision);
-            }
         }
     }
 

@@ -7,5 +7,6 @@ public class EndNode : Node {
     {
         game.DisallowStartMovement();
         game.messageBox.DisplayMessageBox("You completed the level!",false);
+        game.SaveResults();
     }
 }

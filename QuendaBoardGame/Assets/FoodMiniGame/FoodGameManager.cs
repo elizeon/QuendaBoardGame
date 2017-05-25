@@ -9,13 +9,42 @@ public class FoodGameManager : MonoBehaviour {
     public Texture2D progressBarEmpty;
     public Texture2D progressBarFull;
     private float currentSize;
-    public float current;
-    public float maxSize;
+    public float currentHunger;
+    public float maxHunger;
+    public GameObject foodGame;
+    Game m_game;
+    private bool m_result;
 
     private void Start()
     {
+        m_game = FindObjectOfType<Game>();
         pos = new Vector2(0, 0);
         size = new Vector2(Screen.width, 50);
+    }
+
+    public void ReturnToGame(int currentScene)
+    {
+        Destroy(foodGame);
+
+        m_game.scene.SetActive(true);
+
+        m_game.TriggerCamera(true);
+        m_game.AllowStartMovement();
+
+        if (m_result)
+        {
+            m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.", true);
+            m_game.MoveOnPath(3);
+            m_game.AddResult("Food Game", m_result);
+            m_game.SaveResults();
+        }
+        else
+        {
+            m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.", true);
+            m_game.MoveOnPath(-3);
+            m_game.AddResult("Food Game", m_result);
+            m_game.SaveResults();
+        }
     }
 
     void OnGUI()
@@ -34,12 +63,30 @@ public class FoodGameManager : MonoBehaviour {
 
     }
 
+    public void Lose()
+    {
+        m_result = false;
+        ReturnToGame(5);
+    }
+
+    public void Win()
+    {
+        m_result = true;
+        ReturnToGame(5);
+    }
+
     void Update()
     {
-        // for this example, the bar display is linked to the current time,
-        // however you would set this value based on your desired display
-        // eg, the loading progress, the player's health, or whatever.
-        currentSize = current / maxSize;
 
+        currentHunger = FindObjectOfType<Quenda>().hunger;
+        currentSize = currentHunger / maxHunger;
+        if (currentHunger <= 0)
+        {
+            Lose();
+        }
+        if(currentHunger >= maxHunger)
+        {
+            Win();
+        }
     }
 }
