@@ -51,7 +51,7 @@ public class Quenda : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Food"))
+        if (collision.gameObject.CompareTag("Food") || collision.gameObject.CompareTag("Buried"))
         {
             Effect n = new Effect();
             n.speedMultiplier = collision.GetComponent<Food>().m_characterEffectSpeed;
@@ -61,11 +61,6 @@ public class Quenda : MonoBehaviour {
             hunger += collision.GetComponent<Food>().m_hungerEffect;
             Object.Destroy(collision.gameObject);
             effects.Add(n);
-        }
-
-        if (collision.gameObject.CompareTag("Buried"))
-        {
-            Object.Destroy(collision);
         }
     }
 
