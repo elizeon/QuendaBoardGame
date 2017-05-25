@@ -10,6 +10,9 @@ public class QuizScreen : MonoBehaviour
     GameObject m_button1;
 
     [SerializeField]
+    GameObject m_background;
+
+    [SerializeField]
     GameObject m_button2;
 
     [SerializeField]
@@ -57,13 +60,14 @@ public class QuizScreen : MonoBehaviour
     /// <param name="toggle"></param>
     public void ToggleElements(bool toggle)
     {
+        m_background.SetActive(toggle);
         m_questionText.SetActive(toggle);
         m_hintText.SetActive(toggle);
 
 
         if (toggle)
         {
-            
+            m_game.DisallowStartMovement();
         }
         else
         {

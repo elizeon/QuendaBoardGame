@@ -160,9 +160,13 @@ public class Game : MonoBehaviour
 
         if (m_tilesToMove > 0)
         {
-            //if (lastNode.type == Node.NodeType.none)
-            //{
-            if(m_tilesToMove>currentPath.transform.childCount)
+
+            m_playerMesh.transform.LookAt(m_currentNode.transform, new Vector3(0, 1, 0));
+
+
+            SetPlayerAnimation(true);
+            
+            if (m_tilesToMove>currentPath.transform.childCount)
             {
                 Debug.Log("Capping movement to new path's end.");
                 m_tilesToMove = currentPath.transform.childCount;
@@ -170,6 +174,9 @@ public class Game : MonoBehaviour
             }
             m_movingOnPath = true;
         }
+        
+        // Shouldnt be <0 tiles to move because you're just entering this path
+        // at the start.
     }
 
     /// <summary>
@@ -316,6 +323,8 @@ public class Game : MonoBehaviour
         }
     }
 
+    bool waitingForTileAction = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -332,128 +341,154 @@ public class Game : MonoBehaviour
         // Instead just make it set tiles to move to count when you set this.
         if(!m_paused)
         {
-            if (m_player.transform.position != m_currentNode.transform.position)
+            if(waitingForTileAction)
             {
-                MoveToNode(m_currentNode);
+                if(!messageBox.Active())
+                {
+                    m_movedTiles = 0;
+                    m_movingOnPath = false;
+                    m_currentNode.PerformAction();
+                    waitingForTileAction = false;
+                }
             }
             else
             {
-                if (m_movingOnPath)
+                if (m_player.transform.position != m_currentNode.transform.position)
                 {
-                    if (m_tilesToMove != 0)
+                    MoveToNode(m_currentNode);
+                }
+                else
+                {
+                    if (m_movingOnPath)
                     {
-                        if (m_tilesToMove < 0)
+                        if (m_tilesToMove != 0)
                         {
-                            GoToPrevNodeWithoutEvent();
-
-                        }
-                        else
-                        {
-                            GoToNextNodeWithoutEvent();
-
-                        }
-                        if (m_currentNode.type == Node.NodeType.crossroads)
-                        {
-                            m_movedTiles = 0;
-                            m_movingOnPath = false;
-                            m_currentNode.PerformAction();
-                        }
-                        else
-                        {
-                            if (m_currentNode.type == Node.NodeType.merge)
+                            if (m_tilesToMove < 0)
                             {
+                                GoToPrevNodeWithoutEvent();
+
+                            }
+                            else
+                            {
+
+                                GoToNextNodeWithoutEvent();
+
+                            }
+                            if (m_currentNode.type == Node.NodeType.crossroads)
+                            {
+                                if (messageBox.Active())
+                                {
+                                    waitingForTileAction = true;
+                                }
+                                else
+                                {
+                                    m_movedTiles = 0;
+                                    m_movingOnPath = false;
+                                    m_currentNode.PerformAction();
+                                }
+                            }
+                            else
+                            {
+                                if (m_currentNode.type == Node.NodeType.merge)
+                                {
+                                    m_movedTiles = 0;
+                                    m_movingOnPath = false;
+                                    m_currentNode.PerformAction();
+                                }
+                            }
+
+
+                            //SetCurrentNode(m_currentTileIndex+1)
+                            m_movedTiles += 1;
+                            m_tilesToMove -= 1;
+                        }
+                        else
+                        {
+                            SetPlayerAnimation(false);
+
+                            if (!messageBox.Active())
+                            {
+
                                 m_movedTiles = 0;
                                 m_movingOnPath = false;
                                 m_currentNode.PerformAction();
                             }
+                            else
+                            {
+
+                                waitingForTileAction = true;
+                                // Stops message box from resuming play, as there is a tile action in queue that
+                                // will not allow the player to move until it is complete.
+                                if (messageBox.canMoveOnResume)
+                                {
+                                    messageBox.canMoveOnResume = false;
+                                }
+                            }
                         }
 
-
-                        //SetCurrentNode(m_currentTileIndex+1)
-                        m_movedTiles += 1;
-                        m_tilesToMove -= 1;
                     }
                     else
                     {
-                        if (!messageBox.Active())
-                        {
+                        SetPlayerAnimation(false);
 
-                            m_movedTiles = 0;
-                            m_movingOnPath = false;
-                            m_currentNode.PerformAction();
-                        }
-                        else
-                        {
-                            // Stops message box from resuming play, as there is a tile action in queue that
-                            // will not allow the player to move until it is complete.
-                            if(messageBox.canMoveOnResume)
-                            {
-                                messageBox.canMoveOnResume = false;
-                            }
-                        }
                     }
-
                 }
-                else
+
+                /*
+                if (Input.GetKeyDown(KeyCode.N))
                 {
-                    SetPlayerAnimation(false);
+                    GoToNextNode();
+                }
+                */
+                if (debug)
+                {
 
                 }
+                if (Input.GetKeyDown(KeyCode.B))
+                {
+                    int randNumber = Random.Range(1, 6);
+                    Debug.Log(randNumber);
+                    MoveOnPath(randNumber);
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                {
+
+                    MoveOnPath(1);
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+
+                    MoveOnPath(2);
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha3))
+                {
+
+                    MoveOnPath(3);
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha4))
+                {
+
+                    MoveOnPath(4);
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha5))
+                {
+
+                    MoveOnPath(5);
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha6))
+                {
+
+                    MoveOnPath(6);
+                }
+
+
             }
-
-            /*
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                GoToNextNode();
-            }
-            */
-            if (debug)
-            {
-
-            }
-            if (Input.GetKeyDown(KeyCode.B))
-            {
-                int randNumber = Random.Range(1, 6);
-                Debug.Log(randNumber);
-                MoveOnPath(randNumber);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-
-                MoveOnPath(1);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-
-                MoveOnPath(2);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-
-                MoveOnPath(3);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-
-                MoveOnPath(4);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-
-                MoveOnPath(5);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha6))
-            {
-
-                MoveOnPath(6);
-            }
-
 
         }
         else
@@ -628,6 +663,11 @@ public class Game : MonoBehaviour
     {
         m_tilesToMove = 0;
         m_movingOnPath = false;
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
     
 }

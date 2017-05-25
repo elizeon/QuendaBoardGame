@@ -94,6 +94,7 @@
     <Compile Include="Assets\FoodMiniGame\QuendaVision.cs" />
     <Compile Include="Assets\FoodMiniGame\Rabbit.cs" />
     <Compile Include="Assets\Game.cs" />
+    <Compile Include="Assets\Menu.cs" />
     <Compile Include="Assets\MessageBox.cs" />
     <Compile Include="Assets\Nodes\CrossroadsNode.cs" />
     <Compile Include="Assets\Nodes\EndNode.cs" />
