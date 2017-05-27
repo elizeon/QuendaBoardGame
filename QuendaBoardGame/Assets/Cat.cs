@@ -1,6 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+/*
+ * Class for 3D patrolling object
+ * Written by Elizabeth Haynes
+ * 
+ * */
 
 public class Cat : MonoBehaviour {
 

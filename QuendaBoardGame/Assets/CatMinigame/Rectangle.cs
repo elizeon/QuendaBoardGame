@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Rectangle class
+ * 
+ * By Elizabeth Haynes
+ * */
 public struct Rectangle
 {
     public Vector2 topLeft { get; set; }

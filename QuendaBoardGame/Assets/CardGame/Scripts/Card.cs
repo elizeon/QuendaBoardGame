@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/**
+ * Card class for card minigame
+ * Written by Maddy Topaz
+ * */
 public class Card : MonoBehaviour
 {
 
@@ -25,6 +29,8 @@ public class Card : MonoBehaviour
     {
         flipped = false;
         manager = GameObject.FindGameObjectWithTag("Manager");
+
+        //FindObjectOfType<GameManager>().matches = 13;
 	}
 
     public void FlipCard()

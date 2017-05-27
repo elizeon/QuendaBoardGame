@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Food spawner for food minigame
+ * Written by Nathan Gane
+ * 
+ * */
 public class FoodSpawner : MonoBehaviour {
     //chance to spawn an item out of 100, total of all should be below 100
     public float goodFoodChance;

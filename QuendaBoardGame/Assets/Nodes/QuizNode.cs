@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+
+/*
+ * Board game node for quizzes
+ * Written by Elizabeth Haynes
+ * 
+ * */
 public class QuizNode : Node
 {
 
+    public override void Start()
+    {
 
-    /// <summary>
-    /// Which quiz is given.
-    /// </summary>
-    /// 
-
+        base.Start();
+        type = Node.NodeType.quiz;
+    }
     /// <summary>
     /// What quiz starts when the player lands on this tile?
     /// </summary>

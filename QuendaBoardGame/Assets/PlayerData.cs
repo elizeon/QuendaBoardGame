@@ -2,7 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerData : MonoBehaviour {
+
+/*
+ * Player data collection class
+ * Written by Nathan Gane
+ * 
+ * */
+public class PlayerData {
     public string m_name;
     public List<bool> m_results = new List<bool>();
 

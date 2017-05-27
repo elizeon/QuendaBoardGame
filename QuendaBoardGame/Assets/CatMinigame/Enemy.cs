@@ -131,9 +131,6 @@ public class Enemy : GameObject2D
         if (!_2DUtil.IsAt(this.pos2D, patrolLoc))
             {
                 Debug.Log("Moving towards next patrol point. ");
-
-                Quaternion rotation = Quaternion.LookRotation(patrolNext.transform.position - transform.position, transform.TransformDirection(Vector3.up));
-                transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
                 
                 _2DUtil.PrintVec(patrolLoc);
 
@@ -170,10 +167,16 @@ public class Enemy : GameObject2D
             if (m_enemyState == EnemyState.chasing)
             {
             Debug.Log("Chasing");
-                rotation = _2DUtil.LookAt(this.pos2D, catGame.player.pos2D);
+
+                Vector3 angle = transform.position - catGame.player.transform.position;
+                float ang = Mathf.Atan2(angle.y, angle.x) * Mathf.Rad2Deg;
+                ang += 90;
+                //transform.LookAt(target, Vector3.forward);
+                transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, ang));
+                
                 direction = catGame.player.pos2D - this.pos2D;
                 direction.Normalize();
-                SetPos2D( Vector3.MoveTowards(pos2D, catGame.player.pos2D, Time.fixedDeltaTime * m_currentMoveSpeed));
+                SetPos2D( Vector3.MoveTowards(pos2D, catGame.player.pos2D, (float)Time.fixedDeltaTime * (float)m_currentMoveSpeed));
                 //_2DUtil.MoveTowards(this, catGame.player.pos2D, Time.fixedDeltaTime * m_currentMoveSpeed);
             }
         }
@@ -202,9 +205,20 @@ public class Enemy : GameObject2D
         Vector2 dest = m_patrolPath.transform.GetChild(newPatrolIndex).position;
 
 
+
+        Vector3 angle = transform.position - m_patrolPath.transform.GetChild(newPatrolIndex).position;
+        float ang = Mathf.Atan2(angle.y, angle.x) * Mathf.Rad2Deg;
+        ang += 90;
+        //transform.LookAt(target, Vector3.forward);
+        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, ang));
+
+
+
         rotation = _2DUtil.LookAt(source, dest);
         direction = dest - this.pos2D;
         m_patrolIndex = newPatrolIndex;
+
+
 
     }
 

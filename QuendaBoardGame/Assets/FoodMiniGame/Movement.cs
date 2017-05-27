@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * 2D Player mouse movement with click
+ * Written by Nathan Gane
+ * 
+ * */
+
 public class Movement : MonoBehaviour {
 
     public float speed;
@@ -74,9 +80,11 @@ public class Movement : MonoBehaviour {
             target = Camera.main.ScreenToWorldPoint(mousePos);
             target.z = transform.position.z;
             //Debug.Log(target);
-        }else
+        }
+
+        else
         { 
-            target = transform.position;
+            //target = transform.position;
         }
     }
 }

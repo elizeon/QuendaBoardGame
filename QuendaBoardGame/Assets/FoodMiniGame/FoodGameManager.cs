@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Manager for food minigame
+ * Written by Nathan Gane
+ * 
+ * */
+
 public class FoodGameManager : MonoBehaviour {
     public float barDisplay;
     private Vector2 pos;
@@ -25,20 +31,26 @@ public class FoodGameManager : MonoBehaviour {
     public void ReturnToGame(int currentScene)
     {
         Destroy(foodGame);
-        m_game = FindObjectOfType<Game>();
+
+        m_game.scene.SetActive(true);
+
         m_game.TriggerCamera(true);
+        m_game.AllowStartMovement();
 
         if (m_result)
         {
-            m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.", true);
+            m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.", false);
             m_game.MoveOnPath(3);
+            m_game.DisallowStartMovement();
+
             m_game.AddResult("Food Game", m_result);
             m_game.SaveResults();
         }
         else
         {
-            m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.", true);
+            m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.", false);
             m_game.MoveOnPath(-3);
+            m_game.DisallowStartMovement();
             m_game.AddResult("Food Game", m_result);
             m_game.SaveResults();
         }

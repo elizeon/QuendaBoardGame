@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * Script for unity UI screen that presents a Quiz to the player.
+ * Written by Elizabeth Haynes
+ * */
 public class QuizScreen : MonoBehaviour
 {
 
     [SerializeField]
     GameObject m_button1;
+
+    [SerializeField]
+    GameObject m_background;
 
     [SerializeField]
     GameObject m_button2;
@@ -64,13 +71,14 @@ public class QuizScreen : MonoBehaviour
     /// <param name="toggle"></param>
     public void ToggleElements(bool toggle)
     {
+        m_background.SetActive(toggle);
         m_questionText.SetActive(toggle);
         m_hintText.SetActive(toggle);
 
 
         if (toggle)
         {
-            
+            m_game.DisallowStartMovement();
         }
         else
         {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuendaBoardGame", "QuendaBoardGame.csproj", "{1EE2C3D7-B06C-5268-3FC8-F9FC771F671C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuendaBoardGame.CSharp", "QuendaBoardGame.CSharp.csproj", "{D7FC5B1A-27D5-98A7-CE38-D67896D47ACD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1EE2C3D7-B06C-5268-3FC8-F9FC771F671C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1EE2C3D7-B06C-5268-3FC8-F9FC771F671C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1EE2C3D7-B06C-5268-3FC8-F9FC771F671C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1EE2C3D7-B06C-5268-3FC8-F9FC771F671C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7FC5B1A-27D5-98A7-CE38-D67896D47ACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7FC5B1A-27D5-98A7-CE38-D67896D47ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7FC5B1A-27D5-98A7-CE38-D67896D47ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7FC5B1A-27D5-98A7-CE38-D67896D47ACD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

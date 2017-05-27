@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Board game node for merging convergent paths
+ * Written by Elizabeth Haynes
+ *
+ **/
 [System.Serializable]
 public class MergeNode : Node
 {
@@ -13,17 +18,22 @@ public class MergeNode : Node
 
     public override void PerformAction()
     {
-        if(game.tilesToMove>=0)
+        if (game.tilesToMove > 0)
         {
 
             Debug.Log("Merging paths move>=0.");
             game.SetCurrentPathAtStart(m_newPathIndex);
         }
-        else
+        else if (game.tilesToMove<0)
         {
 
             Debug.Log("Merging paths move<0.");
             game.SetCurrentPathAtEnd(m_prevPathIndex);
+        }
+        else
+        {
+            game.SetCurrentPathAtStart(m_newPathIndex);
+            game.AllowStartMovement();
         }
 
     }

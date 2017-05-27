@@ -4,6 +4,7 @@ using UnityEngine;
 
     /// <summary>
     /// Wrapper class for a table/dictionary
+    /// By Elizabeth Haynes
     /// </summary>
     /// <typeparam name="TKey">Key type</typeparam>
     /// <typeparam name="TValue">Value type</typeparam>

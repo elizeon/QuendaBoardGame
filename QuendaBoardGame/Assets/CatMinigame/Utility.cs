@@ -5,6 +5,7 @@ using UnityEngine;
 
     /// <summary>
     /// Utility methods used throughout game
+    /// By Elizabeth Haynes
     /// </summary>
     public static class Utility
     {
