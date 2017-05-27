@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * Manager for card minigame
+ * Written by Maddy Topaz
+ * Modified by Elizabeth Haynes and Nathan Gane
+ * 
+ * */
 public class GameManager : MonoBehaviour
 {
 
@@ -24,7 +30,10 @@ public class GameManager : MonoBehaviour
 
     public List<Card> cards = new List<Card>();
 
-    public Text matchText;
+    [SerializeField]
+    private Text matchText;
+    [SerializeField]
+    private Text attemptsText;
 
 
     public int matches { get; set; }
@@ -63,13 +72,34 @@ public class GameManager : MonoBehaviour
             //Intializes two cards at a time until all cards initalized
             if(!cards[i].Initialized)
             {
-                //Generate a category for this card
-                string value = categories[Random.Range(0, 4)];
 
+                //Generate a category for this card
+
+                int numInCat =0;
+                string value = "";
+
+                do
+                {
+                    value = categories[Random.Range(0, 4)];
+                    numInCat = 0;
+
+
+                    for (int a = 0; a < cards.Count; a++)
+                    {
+                        if (cards[a].CardValue == value)
+                        {
+                            numInCat += 1;
+                        }
+                    }
+
+                }
+                while (numInCat >= 2);
+                
                 //Give the card that category
                 cards[i].CardValue = value;
                 //Set the cards image
-                SetCardImage(i, value);                
+                SetCardImage(i, value, 0);
+
                 //Index i no longer a free spot to put a card match
                 freeSpots.Remove(i);
                 //Card is now initialized
@@ -80,10 +110,23 @@ public class GameManager : MonoBehaviour
                 int freeSpotIndex = freeSpots[index];
                 cards[freeSpotIndex].CardValue = value;
                 SetCardImage(freeSpotIndex, value);
+                
                 freeSpots.Remove(freeSpotIndex);
                 cards[freeSpotIndex].Initialized = true;
-            }   
+                SetCardImage(freeSpotIndex, value, 1);
+
+            }
         }
+    }
+
+    void SetCardImage(int index, string category, int catIndex)
+    {
+        List<Sprite> possibleFaces;
+        //Get the list of images I can use for this category
+        possibleFaces = matchingImage[category];
+        //Set the cards image
+        cards[index].CardFace = possibleFaces[catIndex];
+        cards[index].CardBack = cardBack;
     }
 
     void SetCardImage(int index, string category)
@@ -117,14 +160,18 @@ public class GameManager : MonoBehaviour
 
         if (m_result)
         {
-            m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.", true);
+            m_game.messageBox.DisplayMessageBox("Success! Move forward 3 spaces.", false);
             m_game.MoveOnPath(3);
+            m_game.DisallowStartMovement();
+
             m_game.AddResult("Card Game", m_result);
         }
         else
         {
-            m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.", true);
+            m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.", false);
             m_game.MoveOnPath(-3);
+            m_game.DisallowStartMovement();
+
             m_game.AddResult("Card Game", m_result);
         }
     }
@@ -172,8 +219,17 @@ public class GameManager : MonoBehaviour
             }
             else
             {
+                matchAttempts++;
+                attemptsText.text = "Failed Attempts: " + matchAttempts + " / 8";
+                if (matchAttempts >= 8)
+                {
+                    Lose();
+                }
                 card1.FalseCheck();
                 card2.FalseCheck();
+
+                card1 = null;
+                card2 = null;
             }
         }
     }
@@ -183,19 +239,23 @@ public class GameManager : MonoBehaviour
         return cardBack;
     }
 
-
+    int matchAttempts = 0;
+    
     bool Match()
     {
+        
         if(card1.CardValue == card2.CardValue)
         {
             matches++;
-            matchText.text = "Matches: " + matches + "/ 14";
-            if(matches >= 14)
+            matchText.text = "Matches: " + matches + "/ 4";
+            if(matches >= 4)
             {
                 Win();
             }
             return true;
-        }       
+        }
+
+
         return false;
     }
 

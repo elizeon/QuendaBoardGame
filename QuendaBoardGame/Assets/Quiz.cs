@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Quiz data
+ * 
+ * Written by Elizabeth Haynes
+ * 
+ * */
 [System.Serializable]
 public class Quiz
 {

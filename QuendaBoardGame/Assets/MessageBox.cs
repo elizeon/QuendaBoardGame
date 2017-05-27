@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/**
+ * Class for in-game message box
+ * 
+ * Written by Elizabeth Haynes 
+ * */
 public class MessageBox : MonoBehaviour
 {
     Game m_game;
@@ -15,14 +20,19 @@ public class MessageBox : MonoBehaviour
 
     public bool canMoveOnResume { get { return m_canMoveOnResume; } set { m_canMoveOnResume = value; } }
     // Use this for initialization
-    void Start ()
+    void Awake ()
     {
         m_game = FindObjectOfType<Game>();
-        HideMessageBox();
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    void Start()
+    {
+        HideMessageBox();
+
+    }
+
+    // Update is called once per frame
+    void Update ()
     {
 		
 	}
@@ -35,12 +45,12 @@ public class MessageBox : MonoBehaviour
         m_canMoveOnResume = true;
     }
 
-    public void DisplayMessageBox(string text, bool canMoveOnResume)
+    public void DisplayMessageBox(string text, bool moveOnResume)
     {
         m_game.paused = true;
         m_canvas.SetActive(true);
         m_messageText.GetComponent<Text>().text = text;
-        m_canMoveOnResume = canMoveOnResume;
+        m_canMoveOnResume = moveOnResume;
     }
 
     /// <summary>
@@ -52,7 +62,8 @@ public class MessageBox : MonoBehaviour
         HideMessageBox();
         if(m_canMoveOnResume)
         {
-            m_game.AllowStartMovement();
+            Debug.Log("Closing message box allowed resume start movement.");
+            //m_game.AllowStartMovement();
 
         }
     }

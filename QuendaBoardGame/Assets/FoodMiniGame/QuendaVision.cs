@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Quenda vision (transparent food that appears as you go closer) for food minigame
+ * By Nathan Gane
+ * 
+ * */
 public class QuendaVision : MonoBehaviour
 {
     public float m_radius;

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Food object for food minigame
+ * Written by Nathan Gane
+ * */
 public class Food : MonoBehaviour {
     public bool m_isGood;
     public string m_name;

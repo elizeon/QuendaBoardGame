@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/**
+ * Crossroads (choose path L/R) node for board game
+ * By Elizabeth Haynes
+ * */
 [System.Serializable]
 public class CrossroadsNode : Node
 {

@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/*
+ * 
+ * Class for in-game menu display
+ * 
+ * Written by Elizabeth Haynes
+ * 
+ * */
 public class Menu : MonoBehaviour
 {
 

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Food effects for food minigame
+ * By Nathan Gane
+ * */
 public class Effect : MonoBehaviour
 {
     public float speedMultiplier { get; set; }
@@ -9,6 +13,12 @@ public class Effect : MonoBehaviour
     public float hungerGenerationModifier { get; set; }
     public float duration { get; set; }
 }
+
+/**
+ * 
+ * Quenda player class for food minigame
+ * By Nathan Gane
+ * */
 
 public class Quenda : MonoBehaviour {
     public float hunger;

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/**
+ * Card class for card minigame
+ * Written by Maddy Topaz
+ * */
 public class Card : MonoBehaviour
 {
 

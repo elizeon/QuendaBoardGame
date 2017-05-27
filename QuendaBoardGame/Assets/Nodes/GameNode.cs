@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Todo make member variables private for all these classes.
-/// </summary>
+/*
+ * Board game node for starting minigames
+ * Written by Elizabeth Haynes
+ *
+ **/
 [System.Serializable]
 public class GameNode : Node
 {
@@ -16,21 +18,21 @@ public class GameNode : Node
     }
 
     public enum GameType { food, cat, card };
-    public GameType m_gameType;
+    public GameType gameType;
     public override void PerformAction()
     {
         game.AllowStartMovement();
-        if (m_gameType == GameType.food)
+        if (gameType == GameType.food)
         {
             Debug.Log("Loading food game!");
             LoadFoodGame();
         }
-        if (m_gameType == GameType.cat)
+        if (gameType == GameType.cat)
         {
             Debug.Log("Loading cat game!");
             LoadCatGame();
         }
-        if (m_gameType == GameType.card)
+        if (gameType == GameType.card)
         {
             Debug.Log("Loading card game!");
             LoadCardGame();

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * Script for unity UI screen that presents a Quiz to the player.
+ * Written by Elizabeth Haynes
+ * */
 public class QuizScreen : MonoBehaviour
 {
 

@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/**
+ * Rabbit competitor in Food Minigame
+ * By Nathan Gane
+ * 
+ * */
 public class Rabbit : MonoBehaviour {
     // Use this for initialization
     public float speed;
