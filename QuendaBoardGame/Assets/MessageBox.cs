@@ -60,9 +60,16 @@ public class MessageBox : MonoBehaviour
     {
         m_game.paused = false;
         HideMessageBox();
+
+        if(m_game.currentNode.type == Node.NodeType.none)
+        {
+            Debug.Log("Allowing movement because on none node type");
+            m_game.AllowStartMovement();
+        }
+
         if(m_canMoveOnResume)
         {
-            Debug.Log("Closing message box allowed resume start movement.");
+            //Debug.Log("Closing message box allowed resume start movement.");
             //m_game.AllowStartMovement();
 
         }

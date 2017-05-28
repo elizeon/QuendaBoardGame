@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
-using UnityEditor;
+//using UnityEditor;
 
 /**
  * Main game class for Quenda board game
@@ -85,6 +85,11 @@ public class Game : MonoBehaviour
 
     public void ShowResultsMenu()
     {
+
+
+        m_mainMenu.SetActive(false);
+        m_resultsMenu.gameObject.SetActive(true);
+
         Debug.Log("Showing results.");
         // for each result with n values
 
@@ -145,8 +150,6 @@ public class Game : MonoBehaviour
             
         }
 
-        m_mainMenu.SetActive(false);
-        m_resultsMenu.gameObject.SetActive(true);
         m_resultsMenu.Draw(m_camera);
 
 
@@ -246,7 +249,7 @@ public class Game : MonoBehaviour
     {
         if(debug==true)
         {
-            m_playerSpeed = 5f;
+            m_playerSpeed = 10f;
         }
 
         currentLevel = levels[0];
@@ -330,7 +333,7 @@ public class Game : MonoBehaviour
         a = new Quiz();
         a.name = "Dig";
         a.hint = "Hint: Quendas are marsupials that eat subterranean plants, insects and fungi.";
-        a.question = "You want to decide if you should dig a hole. Why do Quendas dig holes ?";
+        a.question = "You want to decide if you should dig a hole. Why do Quendas dig holes?";
         a.quizNode1 = "Provide nest for young";
         a.quizNode2 = "Search for food";
         a.quizNode3 = "Sharpen their claws";
@@ -403,16 +406,16 @@ public class Game : MonoBehaviour
         a.question = "Which of the following foods is good for Quendas?";
         a.quizNode1 = "Cheese";
         a.quizNode2 = "Peanuts";
-        a.quizNode3 = "Truffles";
+        a.quizNode3 = "Fungi";
         a.quizNode4 = "Meat";
-        a.correctMessage = "Correct! Quendas eat underground truffles, a type of fungus.";
-        a.incorrectMessage = "Incorrect.  Quendas eat underground truffles, a type of fungus.";
+        a.correctMessage = "Correct! Quendas eat underground fungi.";
+        a.incorrectMessage = "Incorrect.  Quendas eat underground fungi.";
         a.answer = 3;
         m_quizzes.Add(a);
 
         a = new Quiz();
         a.name = "humanoffer";
-        a.question = "A human approaches and offers you some food. What should you do.";
+        a.question = "A human approaches and offers you some food. What should you do?";
         a.quizNode1 = "Accept the food";
         a.quizNode2 = "Run away";
         a.correctMessage = "Correct! If Quendas become dependent on humans as a source of food they could starve if you leave. You could also risk feeding Quendas something dangerous without knowing.";
@@ -460,6 +463,14 @@ public class Game : MonoBehaviour
     }
     void Start()
     {
+        m_crossroadsMsgBox.SetActive(false);
+        messageBox.gameObject.SetActive(false);
+        m_quizScreen.SetActive(false);
+        m_creditsMenu.SetActive(false);
+        m_resultsMenu.gameObject.SetActive(false);
+        m_overlayUI.SetActive(false);
+        m_playerMesh.SetActive(false);
+        m_mainMenu.SetActive(true);
         ShowMainMenu();
 
 
@@ -522,7 +533,14 @@ public class Game : MonoBehaviour
                 m_tilesToMove = currentPath.transform.childCount;
 
             }
-            m_movingOnPath = true;
+            //m_movingOnPath = true;
+        }
+        else
+        {
+            if(m_tilesToMove == 0)
+            {
+                AllowStartMovement();
+            }
         }
         
         // Shouldnt be <0 tiles to move because you're just entering this path
@@ -545,7 +563,9 @@ public class Game : MonoBehaviour
         {
             //if (lastNode.type == Node.NodeType.none)
             //{
-            m_tilesToMove = -(currentPath.transform.childCount - (m_tilesToMove + 1));
+            Debug.Log("Setting current path at end");
+
+            m_tilesToMove = -currentPath.transform.childCount + (m_tilesToMove + 1);
             //}
             m_movingOnPath = true;
         }
@@ -602,6 +622,7 @@ public class Game : MonoBehaviour
         }
         m_paused = false;
         messageBox.gameObject.SetActive(true);
+
 
         m_quizScreen.SetActive(true);
 
@@ -782,8 +803,51 @@ public class Game : MonoBehaviour
         {
             if(!messageBox.Active() && !m_saveMsgBox.activeSelf)
             {
-                LoadGame(m_levelToMoveTo, 0, 0);
+
+                switch(m_levelToMoveTo)
+                {
+                    case 1:
+                        LoadGame(m_levelToMoveTo, 0, 0);
+
+                        break;
+                    case 2:
+                        ShowMainMenu();
+
+                        break;
+
+
+                    case 11:
+                        // cat game
+                        scene.SetActive(false);
+                        TriggerCamera(false);
+                        DisallowStartMovement();
+                        LoadScene(0, 1, true);
+
+                        break;
+
+
+                    case 12:
+                        // food game
+                        scene.SetActive(false);
+                        TriggerCamera(false);
+                        DisallowStartMovement();
+                        LoadScene(0, 5, true);
+
+                        break;
+
+                    case 13:
+                        // card game
+                        scene.SetActive(false);
+                        TriggerCamera(false);
+                        DisallowStartMovement();
+                        LoadScene(0, 6, true);
+
+                        break;
+
+                }
+                    
                 m_levelToMoveTo = -1;
+
             }
 
         }
@@ -800,6 +864,8 @@ public class Game : MonoBehaviour
                         m_movingOnPath = false;
                         m_currentNode.PerformAction();
                         waitingForTileAction = false;
+                        AllowStartMovement();
+
                     }
                 }
                 else
@@ -818,14 +884,14 @@ public class Game : MonoBehaviour
                                 if (m_tilesToMove < 0)
                                 {
                                     Debug.Log("Moving back.");
-                                    GoToPrevNodeWithoutEvent();
                                     m_tilesToMove += 1;
+                                    GoToPrevNodeWithoutEvent();
 
                                 }
                                 else
                                 {
+                                    Debug.Log("Moving forward.");
                                     m_tilesToMove -= 1;
-
                                     GoToNextNodeWithoutEvent();
 
                                 }
@@ -863,40 +929,16 @@ public class Game : MonoBehaviour
                                 if (!messageBox.Active())
                                 {
 
-                                    if (m_currentNode.type == Node.NodeType.game)
+                                    
+
+                                    m_movedTiles = 0;
+                                    m_movingOnPath = false;
+                                    m_currentNode.PerformAction();
+                              
+                                    if(m_currentNode.type == Node.NodeType.end)
                                     {
-                                        string howToPlay = "";
-                                        switch (m_currentNode.GetComponent<GameNode>().gameType)
-                                        {
-                                            case GameNode.GameType.cat:
-                                                howToPlay = "You're spotted by a cat! You quickly hide. You must find out how to get past, to safety. Reach the right side of the screen to win. Click on the screen to move to that position. Hide in bushes to hide from the cat. ";
-                                                break;
-                                            case GameNode.GameType.food:
-                                                howToPlay = "You find a good area to search for food. Collect the food that is good for quendas and avoid dangerous foods. Good food for Quendas is usually underground. They will become more visible as you sniff them out by getting closer to them. Click the screen to move there. Fill your hunger bar by eating good foods. Bad foods will lower your hunger bar.";
-                                                break;
-                                            case GameNode.GameType.card:
-                                                howToPlay = "You've seen something dangerous, but you're not sure. You must remember what things are good and bad for Quendas. Match all of the cards with their answer to solve the problem. Eg. Match DIET with an image of a Quenda's ideal diet. Click two cards to check if they match. ";
-                                                break;
-                                            default:
-                                                howToPlay = "Unknown game";
-                                                break;
-
-                                        }
-
-
-                                        messageBox.DisplayMessageBox(howToPlay);
-
-                                        waitingForTileAction = true;
+                                        AllowStartMovement();
                                     }
-                                    else
-                                    {
-
-                                        m_movedTiles = 0;
-                                        m_movingOnPath = false;
-                                        m_currentNode.PerformAction();
-                                    }
-
-
 
 
                                 }
@@ -1117,8 +1159,9 @@ public class Game : MonoBehaviour
             m_movingOnPath = true;
             
             Node lastNode = currentPath.transform.GetChild(currentPath.transform.childCount - 1).GetComponent<Node>();
-            if (lastNode.type == Node.NodeType.end)
+            if ((m_tilesToMove > (currentPath.transform.childCount - (currentTileIndex + 1)) && (lastNode.type == Node.NodeType.end)))
             {
+                Debug.Log("Limiting to end of path.");
                 m_tilesToMove = (currentPath.transform.childCount - (currentTileIndex + 1));
             }
 
@@ -1147,6 +1190,7 @@ public class Game : MonoBehaviour
     {
         m_canMove = true;
         m_moveButton.SetActive(true);
+        m_paused = false;
     }
 
     /// <summary>

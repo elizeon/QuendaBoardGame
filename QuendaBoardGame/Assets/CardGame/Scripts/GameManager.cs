@@ -38,9 +38,9 @@ public class GameManager : MonoBehaviour
 
     public int matches { get; set; }
 
-    public Dictionary<string, Sprite> cardLookup = new Dictionary<string, Sprite>();
+    public Table<string, Sprite> cardLookup = new Table<string, Sprite>(1);
 
-    public Dictionary<string, List<Sprite>> matchingImage = new Dictionary<string, List<Sprite>>();
+    public Table<string, List<Sprite>> matchingImage = new Table<string, List<Sprite>>(1);
 
     public void InitializeCategories()
     {
@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
     {
         List<Sprite> possibleFaces;
         //Get the list of images I can use for this category
-        possibleFaces = matchingImage[category];
+        possibleFaces = matchingImage.Get(category);
         //Set the cards image
         cards[index].CardFace = possibleFaces[catIndex];
         cards[index].CardBack = cardBack;
@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
     {
         List<Sprite> possibleFaces;
         //Get the list of images I can use for this category
-        possibleFaces = matchingImage[category];
+        possibleFaces = matchingImage.Get(category);
         int spriteIndex = Random.Range(0, possibleFaces.Count);
         //Set the cards image
         cards[index].CardFace = possibleFaces[spriteIndex];

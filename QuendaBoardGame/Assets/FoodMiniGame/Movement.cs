@@ -73,7 +73,17 @@ public class Movement : MonoBehaviour {
 
     void MouseMovement()
     {
-        if (Input.GetMouseButton(0))
+        bool touchBtn = false;
+        for (var touch =0;touch< Input.touches.Length;touch++)
+        {
+            if (Input.touches[touch].phase == TouchPhase.Began)
+            {
+                touchBtn = true;
+            }
+        }
+
+        if (Input.GetMouseButton(0) || touchBtn)
+
         {
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = 30;

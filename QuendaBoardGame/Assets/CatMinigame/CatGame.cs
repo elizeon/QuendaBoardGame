@@ -286,7 +286,7 @@ public class CatGame : MonoBehaviour
         }
         else
         {
-            m_game.messageBox.DisplayMessageBox("You failed. Move backwards 3 spaces.",false);
+            m_game.messageBox.DisplayMessageBox("The cat spotted you and chased you out of the area. You failed. Move backwards 3 spaces.",false);
             m_game.MoveOnPath(-3);
             m_game.DisallowStartMovement();
 

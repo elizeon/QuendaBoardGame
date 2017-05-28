@@ -32,10 +32,10 @@ public class Cat : MonoBehaviour {
         
         if (this.transform.position != patrolLoc.transform.position)
         {
-            Debug.Log("Moving towards next patrol point. ");
+            //Debug.Log("Moving towards next patrol point. ");
 
             //m_currentMoveSpeed = 1000;
-            transform.position = Vector3.MoveTowards(transform.position, patrolLoc.transform.position, Time.fixedDeltaTime * m_currentMoveSpeed);
+            transform.position = Vector3.MoveTowards(transform.position, patrolLoc.transform.position, Time.deltaTime * m_currentMoveSpeed);
             //_2DUtil.MoveTowards(this, patrolPath[m_patrolIndex], Time.fixedDeltaTime * m_currentMoveSpeed);
             //Console.WriteLine(pos2D.X + ", " + pos2D.Y + " / " + patrolPath[m_patrolIndex].X + ", " + patrolPath[m_patrolIndex].Y);
             

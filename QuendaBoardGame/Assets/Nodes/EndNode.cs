@@ -26,7 +26,8 @@ public class EndNode : Node {
                 break;
             case 1:
                 game.messageBox.DisplayMessageBox("Congratulations - you made it through the area to your new home! You have won the game.", false);
-                game.ShowMainMenu();
+                game.ReadyMoveToLevel(2);
+
                 break;
 
         }
