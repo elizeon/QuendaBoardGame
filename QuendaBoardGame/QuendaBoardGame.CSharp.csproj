@@ -89,6 +89,7 @@
     <Compile Include="Assets\CatMinigame\Rectangle.cs" />
     <Compile Include="Assets\CatMinigame\Table.cs" />
     <Compile Include="Assets\CatMinigame\Utility.cs" />
+    <Compile Include="Assets\DisabledOnMobile.cs" />
     <Compile Include="Assets\FoodMiniGame\Food.cs" />
     <Compile Include="Assets\FoodMiniGame\FoodGameManager.cs" />
     <Compile Include="Assets\FoodMiniGame\FoodSpawner.cs" />

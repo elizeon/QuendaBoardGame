@@ -210,9 +210,24 @@ public class Game : MonoBehaviour
 
     public void SaveResults()
     {
-        string folder = System.IO.Directory.GetCurrentDirectory();// + @"/Data";
 
-        System.IO.StreamWriter file = new System.IO.StreamWriter(folder + @"\PlayerData.txt");
+        string path;
+        if (Application.isMobilePlatform)
+        {
+            path = Application.persistentDataPath;
+
+        }
+        else
+        {
+            path = "Resources /";
+        }
+
+        TextAsset asset = Resources.Load("save.txt") as TextAsset;
+        
+
+        //string folder = System.IO.Directory.GetCurrentDirectory();// + @"/Data";
+
+        System.IO.StreamWriter file = new System.IO.StreamWriter(path + @"\PlayerData.txt");
         file.Write("");
         file.Close();
 
@@ -228,7 +243,7 @@ public class Game : MonoBehaviour
             data.Add("\r\n");
             data.ToString();
 
-            using (StreamWriter outputFile = new StreamWriter(folder + @"\PlayerData.txt", true))
+            using (StreamWriter outputFile = new StreamWriter(path + @"\PlayerData.txt", true))
             {
                 foreach (string line in data)
                     outputFile.Write(line);
@@ -579,9 +594,21 @@ public class Game : MonoBehaviour
         lines[2] = m_currentTileIndex.ToString();
         string mytext = lines[0]+ System.Environment.NewLine+lines[1]+ System.Environment.NewLine+lines[2]+ System.Environment.NewLine;
 
-        
+
+
+        string path;
+        if (Application.isMobilePlatform)
+        {
+            path = Application.persistentDataPath;
+
+        }
+        else
+        {
+            path = "Resources /";
+        }
+
         TextAsset asset = Resources.Load("save.txt") as TextAsset;
-        writer = new StreamWriter("Resources/" + "save.txt");
+        writer = new StreamWriter(path + "save.txt");
         writer.WriteLine(mytext);
 
         writer.Close();
@@ -653,9 +680,19 @@ public class Game : MonoBehaviour
 
     public void LoadGame()
     {
+        string path;
+        if(Application.isMobilePlatform)
+        {
+            path = Application.persistentDataPath;
+
+        }
+        else
+        {
+            path = "Resources /";
+        }
 
         TextAsset asset = Resources.Load("save.txt") as TextAsset;
-        reader = new StreamReader("Resources/" + "save.txt");
+        reader = new StreamReader(path + "save.txt");
 
 
         LoadGame(int.Parse(reader.ReadLine()), int.Parse(reader.ReadLine()), int.Parse(reader.ReadLine()));
@@ -1128,20 +1165,23 @@ public class Game : MonoBehaviour
 
     public void ShowMainMenu()
     {
-        SaveResults();
+
         m_crossroadsMsgBox.SetActive(false);
         messageBox.gameObject.SetActive(false);
-        paused = true;
         m_quizScreen.SetActive(false);
-        for(int i=0;i<levels.Count;i++)
-        {
-            levels[i].gameObject.SetActive(false);
-        }
         m_creditsMenu.SetActive(false);
         m_resultsMenu.gameObject.SetActive(false);
         m_overlayUI.SetActive(false);
         m_playerMesh.SetActive(false);
         m_mainMenu.SetActive(true);
+        m_saveMsgBox.SetActive(false);
+
+        SaveResults();
+        paused = true;
+        for(int i=0;i<levels.Count;i++)
+        {
+            levels[i].gameObject.SetActive(false);
+        }
     }
 
     [SerializeField]
