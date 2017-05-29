@@ -1,4 +1,0 @@
-humanoffer,False,True,True
-road,False,True
-Environment,True
-Food Game,True
